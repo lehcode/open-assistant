@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:User: as User
+
+package Gmail {
+    (Gmail Authorization) as (GmailAuth)
+    package GmailMessages {
+        (Modify Aggregation Settings)
+        (Read Aggregated Messages)
+        (Exclude Messages From Aggregated) as (ExcludeMessages)
+    }
+
+    package GmailAccounts {
+        (Add Gmail Account)
+        (Add Gmail Account) ..> (GmailAuth) : <<depends>>
+        (Remove Gmail Account)
+        (Remove Gmail Account) ..> (GmailAuth) : <<depends>>
+        (Deactivate Gmail Account)
+        (Deactivate Gmail Account) ..> (GmailAuth) : <<depends>>
+    }
+}
+
+package Linkedin {
+(Linkedin Authorization) as (LinkedinAuth)
+    package LinkedinContacts {
+        (Manage Linkedin Contacts)
+        (Manage Linkedin Contacts) ..> (LinkedinAuth) : <<depends>>
+        (Approve Contact Request)
+        (Approve Contact Request) ..> (LinkedinAuth) : <<depends>>
+        (View Contact List)
+        (View Contact List) ..> (LinkedinAuth) : <<depends>>
+        (View Contact List)
+    }
+}
+
+User -> (Manage Configuration)
+User -> (Add Gmail Account)
+User -> (Remove Gmail Account)
+User -> (Deactivate Gmail Account)
+User -> (Modify Aggregation Settings)
+User -> (Read Aggregated Messages)
+User -> (ExcludeMessages)
+User -> (View Contact List)
+User -> (Approve Contact Request)
+User -> (Manage Linkedin Contacts)
+
+
+@enduml

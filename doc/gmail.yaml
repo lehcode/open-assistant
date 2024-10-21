@@ -1,0 +1,100 @@
+openapi: 3.1.0
+info:
+  title: AIXPand Gmail API
+  description: AIXPand API for GMail
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:3000/api'
+paths:
+  /gmail/messages:
+    get:
+      summary: Get Gmail messages
+      tags:
+        - Gmail Messages
+      security:
+        - bearerAuth: [ ]
+      responses:
+        200:
+          description: Gmail messages retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: string
+
+  /gmail/messages/{messageId}:
+    get:
+      summary: Get Gmail message by ID
+      tags:
+        - Gmail Messages
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: messageId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Gmail message retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /gmail/accounts:
+    post:
+      summary: Add Gmail account
+      tags:
+        - Gmail Accounts
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        description: Gmail account information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountInfo:
+                  type: string
+      responses:
+        201:
+          description: Gmail account created
+
+    delete:
+      summary: Remove Gmail account
+      tags:
+        - Gmail Accounts
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        description: Remove Gmail account
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountId:
+                  type: string
+      responses:
+        204:
+          description: Gmail account removed
+        202:
+          description: Request for account deletion accepted
+
+  
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

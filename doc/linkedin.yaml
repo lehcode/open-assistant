@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: AIXPand LinkedIn API
+  description: AIXPand API for LinkedIn
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:3000/api'
+paths:
+  /linkedin/contacts:
+    get:
+      summary: Get LinkedIn contacts
+      tags:
+        - LinkedIn Contacts
+#      security:
+#        - bearerAuth: [ ]
+      responses:
+        200:
+          description: LinkedIn contacts retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      type: string
+
+  /linkedin/contacts/{contactId}:
+    get:
+      summary: Get LinkedIn contact by ID
+      tags:
+        - LinkedIn Contacts
+#      security:
+#        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: contactId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: LinkedIn contact retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact:
+                    type: string
+    patch:
+      summary: Update a LinkedIn contact
+      tags:
+        - LinkedIn Contacts
+#      security:
+#        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: contactId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                disabled:
+                  type: boolean
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

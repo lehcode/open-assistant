@@ -1,0 +1,140 @@
+services:
+  # ui
+  ui:
+    build:
+      dockerfile: Dockerfile
+      context: apps
+      args:
+        - node_version=${NODE_VERSION:-lts}
+        - uid=${HOST_UID}
+        - user=${HOST_USER}
+        - gid=${HOST_GID}
+        - debug=${DOCKER_DEBUG:-no}
+        - yarn_version=${YARN_VERSION:-1.22.22}
+    command: "yarn start-ui"
+    env_file:
+      - .env
+#      - ui/.env
+    networks:
+      - docker_lan
+    ports:
+      - "4300:3000"
+      - "9228:9229"
+    environment:
+      - DEV_PLATFORM=DOCKER
+      - NODE_ENV=${NODE_ENV:-development}
+    volumes:
+      - ./apps/ui:/home/${HOST_USER}/apps/ui
+    tty: true
+    depends_on:
+      - api
+
+  # api
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: apps
+      args:
+        - node_version=${NODE_VERSION:-lts}
+        - uid=${HOST_UID:-1000}
+        - user=${HOST_USER}
+        - gid=${HOST_GID:-1000}
+        - debug=${DOCKER_DEBUG:-no}
+        - yarn_version=${YARN_VERSION:-1.22.22}
+    command: "yarn start-api"
+    env_file:
+      - .env
+#      - api/.env
+    networks:
+      - docker_lan
+    ports:
+      - "3005:3000"
+      - "9229:9229"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DEV_PLATFORM=DOCKER
+    volumes:
+      - ./apps/api:/home/${HOST_USER}/apps/api
+    tty: true
+    depends_on:
+      - postgres
+      - mysql
+
+  # postgres
+  postgres:
+    image: postgres:${PG_VERSION:-bullseye}
+    environment:
+      - POSTGRES_PASSWORD=${PG_PASSWORD:?}
+      - POSTGRES_USER=${PG_USER:-docker}
+      - POSTGRES_DB=${PG_DB:-docker}
+      - PGDATA=${PG_DATA_DIR:-/var/lib/postgresql/data/pgdata}
+      - POSTGRES_INITDB_ARGS=${PG_INITDB_ARGS:-}
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - ./postgres:${PG_DATA_DIR:-/var/lib/postgresql/data/pgdata}
+    networks:
+      - docker_lan
+
+  # mysql
+  mysql:
+    image: mysql:${MYSQL_VERSION:-lts}
+    container_name: mysql
+    volumes:
+      - type: volume
+        source: mysql
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-password}
+      - MYSQL_USER=${MYSQL_USER:-app}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-password}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-laravel}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "5"
+    restart: always
+    networks:
+      - docker_lan
+
+  # adminer
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8088:8080"
+    networks:
+      - docker_lan
+
+  # redis service
+  redis:
+    image: redis:${REDIS_VERSION:-bullseye}
+    container_name: redis-cache
+    hostname: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    sysctls:
+      net.core.somaxconn: 1024
+    volumes:
+      - data_redis:/var/lib/redis
+      - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    networks:
+      - docker_lan
+    user: redis:redis
+    environment:
+      DEBUG: ${DOCKER_DEBUG:-no}
+    restart: unless-stopped
+
+volumes:
+  mysql:
+  data_redis:
+
+networks:
+  docker_lan:
+    ipam:
+      config:
+        - subnet: 172.250.0.0/24
