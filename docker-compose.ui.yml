@@ -1,0 +1,31 @@
+services:
+  react:
+    build:
+      dockerfile: node.Dockerfile
+      context: ./apps
+      args:
+        - app_root=/home/${HOST_USER}/open-assistant/apps
+        - node_version=${NODE_VERSION:-lts}
+        - uid=${HOST_UID}
+        - user=${HOST_USER}
+        - gid=${HOST_GID}
+        - debug=${DOCKER_DEBUG:-no}
+        - yarn_version=${YARN_VERSION:-1.22.22}
+    command: "yarn start-ui"
+    env_file:
+      - .env
+    #      - ui/.env
+    networks:
+      - docker_lan
+    ports:
+      - "4200:4200"
+      - "9228:9229"
+    environment:
+      - DEV_PLATFORM=DOCKER
+      - NODE_ENV=${NODE_ENV:-development}
+    volumes:
+      - ./apps/ui:/home/${HOST_USER}/open-assistant/apps/ui
+    tty: true
+    depends_on:
+      - api
+    pull_policy: "always"

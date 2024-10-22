@@ -1,66 +1,43 @@
 services:
-  # ui
-  ui:
-    build:
-      dockerfile: Dockerfile
-      context: apps
-      args:
-        - node_version=${NODE_VERSION:-lts}
-        - uid=${HOST_UID}
-        - user=${HOST_USER}
-        - gid=${HOST_GID}
-        - debug=${DOCKER_DEBUG:-no}
-        - yarn_version=${YARN_VERSION:-1.22.22}
-    command: "yarn start-ui"
-    env_file:
-      - .env
-#      - ui/.env
-    networks:
-      - docker_lan
-    ports:
-      - "4300:3000"
-      - "9228:9229"
-    environment:
-      - DEV_PLATFORM=DOCKER
-      - NODE_ENV=${NODE_ENV:-development}
-    volumes:
-      - ./apps/ui:/home/${HOST_USER}/apps/ui
-    tty: true
-    depends_on:
-      - api
-
   # api
   api:
     build:
-      dockerfile: Dockerfile
-      context: apps
+      dockerfile: node.Dockerfile
+      context: ./apps
       args:
+        - app_root=/home/${HOST_USER}/open-assistant/apps
         - node_version=${NODE_VERSION:-lts}
         - uid=${HOST_UID:-1000}
         - user=${HOST_USER}
         - gid=${HOST_GID:-1000}
         - debug=${DOCKER_DEBUG:-no}
         - yarn_version=${YARN_VERSION:-1.22.22}
-    command: "yarn start-api"
+    command: "yarn start-api --watch"
+    working_dir: /home/${HOST_USER}/open-assistant/apps/api
     env_file:
       - .env
-#      - api/.env
+      - apps/api/.env
     networks:
-      - docker_lan
+      - assistant_lan
     ports:
-      - "3005:3000"
-      - "9229:9229"
+      - "0.0.0.0:6300:${PORT:-3000}"
+      - "0.0.0.0:6333:${HTTPS_PORT:-3443}"
+      - "0.0.0.0:9229:9229"
     environment:
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-3000}
       - NODE_ENV=${NODE_ENV:-development}
       - DEV_PLATFORM=DOCKER
     volumes:
-      - ./apps/api:/home/${HOST_USER}/apps/api
+      - ./apps/api:/home/${HOST_USER}/open-assistant/apps/api
     tty: true
     depends_on:
       - postgres
       - mysql
+      - redis
+    pull_policy: "always"
 
-  # postgres
+  # postgres on host port 6332
   postgres:
     image: postgres:${PG_VERSION:-bullseye}
     environment:
@@ -72,17 +49,24 @@ services:
     restart: always
     shm_size: 128mb
     volumes:
-      - ./postgres:${PG_DATA_DIR:-/var/lib/postgresql/data/pgdata}
+      - type: volume
+        source: data_postgres
+        target: /var/lib/postgresql/data/pgdata
+        volume:
+          nocopy: true
     networks:
-      - docker_lan
+      - assistant_lan
+    ports:
+      - "0.0.0.0:6332:5432"
+    pull_policy: "always"
 
-  # mysql
+  # mysql on host port 6336
   mysql:
     image: mysql:${MYSQL_VERSION:-lts}
     container_name: mysql
     volumes:
       - type: volume
-        source: mysql
+        source: data_mysql
         target: /var/lib/mysql
         volume:
           nocopy: true
@@ -98,18 +82,27 @@ services:
         max-file: "5"
     restart: always
     networks:
-      - docker_lan
-
-  # adminer
-  adminer:
-    image: adminer
-    restart: always
+      - assistant_lan
     ports:
-      - "8088:8080"
-    networks:
-      - docker_lan
+      - "0.0.0.0:6336:3306"
+    pull_policy: "always"
 
-  # redis service
+  # mongodb on host port 6337
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    networks:
+      - assistant_lan
+    ports:
+      - "0.0.0.0:6337:27017"
+    pull_policy: "always"
+    volumes:
+      - data_mongo:/data/db
+
+  # redis on host port 6339
   redis:
     image: redis:${REDIS_VERSION:-bullseye}
     container_name: redis-cache
@@ -118,23 +111,28 @@ services:
     sysctls:
       net.core.somaxconn: 1024
     volumes:
-      - data_redis:/var/lib/redis
+      - type: volume
+        source: data_redis
+        target: /var/lib/redis
+        volume:
+          nocopy: true
       - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
-    expose:
-      - 6379
+    ports:
+      - "0.0.0.0:6339:6379"
     networks:
-      - docker_lan
+      - assistant_lan
     user: redis:redis
-    environment:
-      DEBUG: ${DOCKER_DEBUG:-no}
     restart: unless-stopped
+    pull_policy: "always"
 
 volumes:
-  mysql:
+  data_mysql:
   data_redis:
+  data_postgres:
+  data_mongo:
 
 networks:
-  docker_lan:
+  assistant_lan:
     ipam:
       config:
-        - subnet: 172.250.0.0/24
+        - subnet: 172.250.254.0/24

@@ -17,7 +17,7 @@
     "build-api": "nx run api:build --skipNxCache",
     "build-ui": "nx run ui:build --skipNxCache",
     "start-api": "nx run api:serve --verbose",
-    "start-ui": "nx run ui:serve",
+    "start-ui": "nx run ui:serve --verbose --host=0.0.0.0",
     "start": "nx run-many --verbose --target=serve --projects=ui,api --parallel=true",
     "test-api": "nx run api:test",
     "test-ui": "nx run ui:test",
@@ -41,6 +41,7 @@
     "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
+    "@nx/angular": "^20.0.3",
     "@nx/devkit": "20.0.2",
     "@nx/eslint": "20.0.2",
     "@nx/eslint-plugin": "20.0.2",
@@ -51,6 +52,7 @@
     "@nx/playwright": "20.0.2",
     "@nx/react": "^20.0.2",
     "@nx/vite": "20.0.2",
+    "@nx/vue": "^20.0.3",
     "@nx/web": "20.0.2",
     "@nx/webpack": "20.0.2",
     "@playwright/test": "^1.36.0",
@@ -99,5 +101,6 @@
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.format:write": "prettier --write"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
