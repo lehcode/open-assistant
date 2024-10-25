@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "outDir": "../dist/out-tsc",
-    "module": "commonjs",
+    "module": "nodenext",
     "sourceMap": false
   },
   "include": [
@@ -15,5 +15,5 @@
     "src/**/*.test.ts",
     "src/**/*.test.js",
     "src/**/*.d.ts"
-  ]
+, "eslint.config.mjs"  ]
 }

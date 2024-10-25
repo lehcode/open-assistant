@@ -21,6 +21,9 @@
           "buildTarget": "api:build:production"
         }
       }
+    },
+    "lint": {
+      
     }
   }
 }

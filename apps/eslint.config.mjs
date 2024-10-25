@@ -1,6 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 
-module.exports = [
+const config = [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
@@ -14,7 +14,9 @@ module.exports = [
         'error',
         {
           enforceBuildableLibDependency: true,
-          allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
+          allow: [
+            '^.*/eslint(\\.base)?\\.config\\.[cm]?js$',
+          ],
           depConstraints: [
             {
               sourceTag: '*',
@@ -26,8 +28,10 @@ module.exports = [
     },
   },
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    files: ['**/*.ts', '**/*.tsx' ],
     // Override or add rules here
     rules: {},
   },
 ];
+
+export default config;

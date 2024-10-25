@@ -1,7 +1,7 @@
 const playwright = require('eslint-plugin-playwright');
 const baseConfig = require('../eslint.config.js');
 
-module.exports = [
+const config = [
   playwright.configs['flat/recommended'],
 
   ...baseConfig,
@@ -11,3 +11,5 @@ module.exports = [
     rules: {},
   },
 ];
+
+export default config;
