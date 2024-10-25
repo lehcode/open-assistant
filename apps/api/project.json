@@ -3,7 +3,7 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "api/src",
   "projectType": "application",
-  "tags": [],
+  "tags": ["api nestjs openassistant"],
   "targets": {
     "serve": {
       "executor": "@nx/js:node",
@@ -11,8 +11,7 @@
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "api:build",
-        "runBuildTargetDependencies": false,
-        "host": "0.0.0.0"
+        "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {

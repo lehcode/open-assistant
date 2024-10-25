@@ -8,7 +8,7 @@ module.exports = [
     ignores: ['**/dist', '**/node_modules'],
   },
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
     rules: {
       '@nx/enforce-module-boundaries': [
         'error',

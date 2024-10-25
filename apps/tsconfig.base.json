@@ -16,7 +16,7 @@
     "isolatedModules": true,
     "lib": ["es2022"],
     "module": "NodeNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
