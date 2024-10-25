@@ -1,0 +1,120 @@
+@startuml
+
+!define RECTANGLE class
+hide class circle
+hide class methods
+hide class attributes
+
+skinparam rectangle {
+    BorderColor black
+    BackgroundColor white
+}
+
+skinparam database {
+    BorderColor black
+    BackgroundColor white
+}
+
+skinparam queue {
+    BorderColor black
+    BackgroundColor white
+}
+
+' Client and Load Balancer
+rectangle Client
+rectangle "Load\nBalancer" as LB
+
+' API Gateway and Services
+rectangle "API Gateway 1" as API1
+rectangle "API Gateway 2" as API2
+note right of API1
+    Authentication
+    Authorization
+    Caching
+    Transformation
+    Rate Limiting
+    Reverse Proxy
+    Monitoring
+    Logging
+    Serverless Functions
+end note
+
+' CDN
+rectangle CDN {
+    rectangle "Static Content"
+}
+
+' Core Services
+rectangle "Metadata\nServer" as MetadataServer #LightBlue
+rectangle "Block Server" as BlockServer #Pink
+
+' Storage Components
+rectangle "Search Index\n(ElasticSearch)" as SearchIndex {
+    database Cache
+    database Storage
+}
+
+' Queue Systems
+queue "Notification\nQueue" as NotificationQueue
+queue "Feed Generation\nQueue" as FeedQueue
+queue "Video Processing\nQueue" as VideoQueue
+
+' Services
+rectangle "Notification\nService" as NotificationService
+rectangle "Search Results\nAggregator" as SearchAggregator
+rectangle "Feed Generation\nService" as FeedService
+rectangle "Video Processing\nService" as VideoProcessingService
+rectangle Worker
+
+' Storage Systems
+rectangle "Image/Thumbnail\nStorage" as ImageStorage
+rectangle "Video\nStorage" as VideoStorage
+note bottom: Distributed File Storage
+
+' Caching and Database
+database "Cache\n(Redis/Memcached)" as CacheSystem
+database "Metadata\nDB" as MetadataDB
+rectangle "Directory Based\nPartitioning" as Partitioning
+rectangle "Shard Manager" as ShardManager
+
+' Data Processing
+rectangle "Data Processing Systems" as DataProcessing {
+    rectangle "(Hadoop/MapReduce, Spark)"
+    rectangle "Distributed\nScheduler" as Scheduler
+    rectangle Workers
+}
+
+' Monitoring and Support Systems
+rectangle "Coordination\nService\n(ZooKeeper)" as Coordinator
+rectangle "Distributed\nLogging" as Logging
+rectangle "Distributed\nTracing" as Tracing
+rectangle "Reports Viewing\n& Data Analysis" as Reports
+database Database
+
+' Connections
+Client --> LB
+LB --> API1
+LB --> API2
+API1 --> MetadataServer
+API2 --> MetadataServer
+MetadataServer --> BlockServer
+MetadataServer --> CacheSystem
+MetadataServer --> NotificationQueue
+NotificationQueue --> NotificationService
+MetadataServer --> SearchIndex
+SearchIndex --> SearchAggregator
+SearchAggregator --> FeedQueue
+FeedQueue --> FeedService
+BlockServer --> ImageStorage
+BlockServer --> VideoStorage
+VideoStorage --> VideoQueue
+VideoQueue --> VideoProcessingService
+VideoProcessingService --> Worker
+MetadataServer --> MetadataDB
+CacheSystem --> ShardManager
+ShardManager --> MetadataDB
+MetadataDB --> DataProcessing
+DataProcessing --> Database
+Database --> Reports
+
+@enduml
