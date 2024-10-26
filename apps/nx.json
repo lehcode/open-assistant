@@ -76,6 +76,11 @@
       "inputs": ["production", "^production"],
       "cache": true
     },
+    "build-dev": {
+      "dependsOn": ["^build"],
+      "inputs": ["development", "^production"],
+      "cache": true
+    },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
     },
