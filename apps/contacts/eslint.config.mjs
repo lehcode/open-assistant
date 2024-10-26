@@ -1,7 +1,7 @@
 const vue = require('eslint-plugin-vue');
 const baseConfig = require('../eslint.config.js');
 
-module.exports = [
+const config = [
   ...baseConfig,
   ...vue.configs['flat/recommended'],
   {
@@ -15,3 +15,5 @@ module.exports = [
     rules: { 'vue/multi-word-component-names': 'off' },
   },
 ];
+
+export default config;
