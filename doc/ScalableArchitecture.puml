@@ -1,0 +1,92 @@
+@startuml
+!define RECTANGLE class
+!define DATABASE database
+!define QUEUE queue
+
+' Remove class elements
+hide class circle
+hide class methods
+hide class attributes
+
+skinparam rectangle {
+    BorderColor black
+    BackgroundColor white
+}
+
+skinparam database {
+    BorderColor black
+    BackgroundColor white
+}
+
+skinparam queue {
+    BorderColor black
+    BackgroundColor white
+}
+
+package "Frontend Tier" {
+    rectangle "React UI" as UI
+    rectangle "CDN" as CDN
+}
+
+package "API Gateway Tier" {
+    rectangle "NGINX/Traefik" as NGINX
+    rectangle "API Cluster" as API
+}
+
+package "Cache & Message Layer" {
+    queue "Redis Cluster" as REDIS
+    rectangle "Elasticsearch" as ELASTIC
+}
+
+package "Database Tier" {
+    database "PostgreSQL Primary" as PG_PRIMARY
+    database "PostgreSQL Replica" as PG_REPLICA
+    database "MongoDB Replica Set" as MONGO
+}
+
+' Connections
+UI --> CDN
+CDN --> NGINX
+NGINX --> API
+API --> REDIS
+API --> ELASTIC
+API --> PG_PRIMARY
+PG_PRIMARY --> PG_REPLICA
+API --> MONGO
+
+' Add notes
+note right of CDN
+  Static content delivery
+  and caching
+end note
+
+note right of NGINX
+  Load balancing
+  SSL termination
+  Routing
+end note
+
+note bottom of REDIS
+  Session storage
+  Caching layer
+  Message broker
+end note
+
+note bottom of ELASTIC
+  Full-text search
+  Analytics
+  Logging
+end note
+
+note bottom of PG_PRIMARY
+  Primary database for
+  transactional data
+end note
+
+note top of MONGO
+  Document storage
+  Replica set with
+  automatic failover
+end note
+
+@enduml

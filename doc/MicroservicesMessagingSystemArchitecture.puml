@@ -1,0 +1,107 @@
+@startuml
+
+!define RECTANGLE class
+hide class circle
+hide class methods
+hide class attributes
+
+' Layout and style
+skinparam rectangle {
+    BorderColor black
+    BackgroundColor white
+}
+
+skinparam database {
+    BorderColor black
+    BackgroundColor white
+}
+
+' Client Layer
+package "Client Layer" {
+    rectangle "Web UI" as UI
+    rectangle "Mobile Apps" as Mobile
+}
+
+' API Gateway
+rectangle "API Gateway" as Gateway
+
+' ZooKeeper Cluster
+package "Service Discovery & Configuration\nZooKeeper Cluster" {
+    rectangle "ZooKeeper Node 1" as ZK1
+    rectangle "ZooKeeper Node 2" as ZK2
+    rectangle "ZooKeeper Node 3" as ZK3
+}
+
+' Message Services
+package "Message Services" {
+    rectangle "Blog Service" as BlogService
+    rectangle "Email Service" as EmailService
+    rectangle "Notification Service" as NotificationService
+}
+
+' Message Brokers
+package "Message Brokers" {
+    queue "Kafka Cluster" as Kafka
+}
+
+' Databases
+package "Databases" {
+    database "Blog DB" as BlogDB
+    database "Email DB" as EmailDB
+    database "User DB" as UserDB
+}
+
+' Connections - Client to Gateway
+UI --> Gateway
+Mobile --> Gateway
+
+' Connections - Gateway to Services
+Gateway --> BlogService
+Gateway --> EmailService
+Gateway --> NotificationService
+
+' Connections - Services to Message Broker
+BlogService --> Kafka
+EmailService --> Kafka
+NotificationService --> Kafka
+
+' Connections - Services to Databases
+BlogService --> BlogDB
+EmailService --> EmailDB
+NotificationService --> UserDB
+
+' Connections - Services to ZooKeeper (using dotted lines)
+BlogService ..> ZK1
+EmailService ..> ZK2
+NotificationService ..> ZK3
+
+' ZooKeeper Ensemble Connections (bidirectional)
+ZK1 <--> ZK2
+ZK2 <--> ZK3
+ZK3 <--> ZK1
+
+' Add notes
+note right of Gateway
+  Handles:
+  - Authentication
+  - Load Balancing
+  - Request Routing
+  - Rate Limiting
+end note
+
+note top of ZK1
+  Manages:
+  - Service Discovery
+  - Configuration
+  - Leader Election
+  - Distributed Locks
+end note
+
+note bottom of Kafka
+  Handles:
+  - Message Queue
+  - Event Streaming
+  - Message Persistence
+end note
+
+@enduml
