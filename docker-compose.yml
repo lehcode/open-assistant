@@ -1,3 +1,10 @@
+x-logging: &default-logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
 services:
   # api
   api:
@@ -20,9 +27,9 @@ services:
     networks:
       - assistant_lan
     ports:
-      - "0.0.0.0:6300:${PORT:-3000}"
-      - "0.0.0.0:6333:${HTTPS_PORT:-3443}"
-      - "0.0.0.0:9229:9229"
+      - "6300:${PORT:-3000}"
+      - "6333:${HTTPS_PORT:-3443}"
+      - "9229:9229"
     environment:
       - HOST=${HOST:-0.0.0.0}
       - PORT=${PORT:-3000}
@@ -37,9 +44,9 @@ services:
       - redis
     pull_policy: "always"
 
-  # postgres on host port 6332
+  # PostgreSQL server on host port 6332
   postgres:
-    image: postgres:${PG_VERSION:-bullseye}
+    image: postgres:${PG_VERSION:-alpine}
     environment:
       - POSTGRES_PASSWORD=${PG_PASSWORD:?}
       - POSTGRES_USER=${PG_USER:-docker}
@@ -51,13 +58,18 @@ services:
     volumes:
       - type: volume
         source: data_postgres
-        target: /var/lib/postgresql/data/pgdata
+        target: ${PG_DATA_DIR:-/var/lib/postgresql/data/pgdata}
         volume:
           nocopy: true
     networks:
       - assistant_lan
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
-      - "0.0.0.0:6332:5432"
+      - "6332:5432"
     pull_policy: "always"
 
   # mysql on host port 6336
@@ -84,7 +96,7 @@ services:
     networks:
       - assistant_lan
     ports:
-      - "0.0.0.0:6336:3306"
+      - "6336:3306"
     pull_policy: "always"
 
   # mongodb on host port 6337
@@ -97,7 +109,7 @@ services:
     networks:
       - assistant_lan
     ports:
-      - "0.0.0.0:6337:27017"
+      - "6337:27017"
     pull_policy: "always"
     volumes:
       - data_mongo:/data/db
@@ -118,7 +130,7 @@ services:
           nocopy: true
       - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - "0.0.0.0:6339:6379"
+      - "6339:6379"
     networks:
       - assistant_lan
     user: redis:redis
@@ -130,9 +142,3 @@ volumes:
   data_redis:
   data_postgres:
   data_mongo:
-
-networks:
-  assistant_lan:
-    ipam:
-      config:
-        - subnet: 172.250.254.0/24

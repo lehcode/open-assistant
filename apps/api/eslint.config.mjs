@@ -1,5 +1,5 @@
 import nestjs from "eslint-plugin-nestjs";
-import baseConfig from '../eslint.config.js';
+import baseConfig from '../eslint.config.mjs';
 
 const config = [...baseConfig];
 

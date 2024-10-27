@@ -1,5 +1,6 @@
 services:
-  react:
+  # React frontend for emails
+  emails-ui:
     build:
       dockerfile: node.Dockerfile
       context: ./apps
@@ -11,12 +12,20 @@ services:
         - gid=${HOST_GID}
         - debug=${DOCKER_DEBUG:-no}
         - yarn_version=${YARN_VERSION:-1.22.22}
-    command: "yarn start-ui"
+    # deploy:
+    #   replicas: 2
+    #   update_config:
+    #     parallelism: 1
+    #     delay: 10s
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.react.rule=Host(`app.localhost`)"
+    command: "yarn start-email"
     env_file:
       - .env
-    #      - ui/.env
+      # - ui/.env
     networks:
-      - docker_lan
+      - assistant_lan
     ports:
       - "4200:4200"
       - "9228:9229"
@@ -24,8 +33,13 @@ services:
       - DEV_PLATFORM=DOCKER
       - NODE_ENV=${NODE_ENV:-development}
     volumes:
-      - ./apps/ui:/home/${HOST_USER}/open-assistant/apps/ui
+      - ./apps/email:/home/${HOST_USER}/open-assistant/apps/email
     tty: true
     depends_on:
       - api
     pull_policy: "always"
+
+networks:
+  assistant_proxy_net:
+    external: true
+    name: assistant_lan

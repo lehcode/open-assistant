@@ -1,0 +1,175 @@
+version: '3.8'
+
+x-logging: &default-logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  # Load Balancer
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - assistant_lan
+
+  # Frontend
+  react:
+    build:
+      dockerfile: node.Dockerfile
+      context: ./apps
+      args:
+        - node_version=${NODE_VERSION:-lts}
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.react.rule=Host(`app.localhost`)"
+    networks:
+      - assistant_lan
+
+  # API Layer
+  api:
+    build:
+      dockerfile: node.Dockerfile
+      context: ./apps
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.localhost`)"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - REDIS_CLUSTER=redis-cluster
+    depends_on:
+      - redis-cluster
+      - postgres-primary
+    networks:
+      - assistant_lan
+
+  # Redis Cluster
+  redis-cluster:
+    image: redis:7.0-alpine
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./config/redis-cluster.conf:/usr/local/etc/redis/redis.conf
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+    networks:
+      - assistant_lan
+
+  # PostgreSQL Primary
+  postgres-primary:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_DB: ${PG_DB}
+    volumes:
+      - postgres_primary_data:/var/lib/postgresql/data
+    networks:
+      - assistant_lan
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL Replica
+  postgres-replica:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_DB: ${PG_DB}
+    command: >
+      postgres
+      -c hot_standby=on
+      -c max_standby_streaming_delay=30s
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    networks:
+      - assistant_lan
+    deploy:
+      replicas: 2
+    depends_on:
+      - postgres-primary
+
+  # Elasticsearch for Search
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - assistant_lan
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  # MongoDB Replica Set
+  mongodb-primary:
+    image: mongo:6
+    command: mongod --replSet rs0 --bind_ip_all
+    volumes:
+      - mongodb_primary_data:/data/db
+    networks:
+      - assistant_lan
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  mongodb-secondary:
+    image: mongo:6
+    command: mongod --replSet rs0 --bind_ip_all
+    volumes:
+      - mongodb_secondary_data:/data/db
+    networks:
+      - assistant_lan
+    deploy:
+      replicas: 2
+    depends_on:
+      - mongodb-primary
+
+volumes:
+  postgres_primary_data:
+  postgres_replica_data:
+  elasticsearch_data:
+  mongodb_primary_data:
+  mongodb_secondary_data:
+
+networks:
+  assistant_lan:
+    driver: overlay
+    ipam:
+      config:
+        - subnet: 172.250.254.0/24
