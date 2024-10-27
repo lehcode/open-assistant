@@ -32,7 +32,7 @@
     "verbatimModuleSyntax": false,
     "rootDir": ".",
     "paths": {
-      "@app-types": ["libs/shared/src/index.ts"]
+      "@app-types": ["libs/feature/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
