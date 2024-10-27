@@ -55,6 +55,11 @@ export default [
   {
     files: ['**/*.ts', '**/*.tsx' ],
     // Override or add rules here
-    rules: {},
+    rules: {
+      'no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'no-undef': 'warn',
+      '@typescript-eslint/no-undef': 'warn',
+    },
   },
 ];
