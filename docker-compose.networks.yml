@@ -1,0 +1,9 @@
+networks:
+  assistant_proxy_net:
+    external: true
+    name: assistant_assistant_lan
+  assistant_lan:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.250.254.0/24
