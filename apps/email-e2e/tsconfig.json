@@ -4,7 +4,7 @@
     "allowJs": true,
     "outDir": "../dist/out-tsc",
     "module": "nodenext",
-    "sourceMap": false
+    "inlineSourceMap": false
   },
   "include": [
     "**/*.ts",

@@ -5,21 +5,17 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "moduleResolution": "nodenext",
-    "lib": ["dom"]
+    "module": "esnext",
+    "lib": ["dom"],
+    "useDefineForClassFields": true
   },
   "files": [],
-  "include": ["src/**/*.ts"],
-  "exclude": [
-    "node_modules",
-  ],
+  "include": [],
+  "exclude": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" },
+    { "path": "../libs/feature" },
   ],
   "extends": "../tsconfig.base.json"
 }

@@ -10,7 +10,9 @@
       "vitest",
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts"
-    ]
+    ],
+    "composite": true,
+    "inlineSourceMap": true
   },
   "include": [
     "vite.config.ts",

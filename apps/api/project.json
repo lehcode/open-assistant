@@ -4,26 +4,64 @@
   "sourceRoot": "api/src",
   "projectType": "application",
   "tags": ["api nestjs openassistant"],
+  "// targets": "to see all targets run: nx show project api --web",
   "targets": {
-    "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "dependsOn": ["build-dev"],
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
-        "buildTarget": "api:build-dev",
-        "runBuildTargetDependencies": false
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/api",
+        "main": "api/src/main.ts",
+        "tsConfig": "api/tsconfig.app.json",
+        "assets": ["api/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "api/webpack.config.js"
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "optimization": false,
+          "extractLicenses": false,
+          "inspect": false
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "api/src/environments/environment.ts",
+              "with": "api/src/environments/environment.production.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "api:build",
+        "watch": true,
+        "waitUntilTargets": ["api:build"]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "api:build:development",
+          "inspect": true,
+          "runtimeArgs": ["--inspect=0.0.0.0:9229"]
+        },
+        "production": {
+          "buildTarget": "api:build:production",
+          "inspect": false
         }
       }
     },
     "lint": {
-      
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

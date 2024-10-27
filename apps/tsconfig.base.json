@@ -6,7 +6,7 @@
     "declarationMap": false,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "emitDecoratorMetadata": false,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,20 +20,20 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
     "pretty": true,
     "removeComments": false,
-    "resolveJsonModule": false,
-    "skipDefaultLibCheck": false,
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "strict": true,
     "target": "es2022",
     "verbatimModuleSyntax": false,
     "rootDir": ".",
     "paths": {
-      "@app-types": ["libs/feature/src/index.ts"]
+      "@types": ["libs/feature/types/src/index.ts"],
+      "@interfaces": ["libs/feature/interfaces/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules/**", "tmp/**"]
 }
