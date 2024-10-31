@@ -2,6 +2,9 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@app-types';
 
+// const bcrypt = require('bcrypt');
+// const saltRounds = 10;
+
 @Injectable()
 export class UserService {
   private readonly users: User[] = [
@@ -15,16 +18,17 @@ export class UserService {
       id: 2,
       username: 'john',
       password: 'changeme',
-      salt: 'salt',
+      salt: 'random',
     },
     {
       id: 3,
-      username: 'maria',
+      username: 'jane',
       password: 'guess',
-      salt: 'salt',
+      salt: 'random',
     },
   ];
 
+  
   async findOne(username: string): Promise<User | undefined> {
     return this.users.find(user => user.username === username);
   }

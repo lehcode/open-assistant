@@ -1,11 +1,11 @@
 import { Component } from 'react';
-
+import * as React from 'react';
 import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
 
 export class App extends Component {
-  override render() {
+  override render(): JSX.Element {
     return (
       <div>
         <NxWelcome title="email" />
@@ -47,7 +47,7 @@ export class App extends Component {
         </Routes>
         {/* END: routes */}
       </div>
-    );
+    ) as JSX.Element;
   }
 }
 

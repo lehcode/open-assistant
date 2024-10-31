@@ -1,1 +1,1 @@
-export * from "./feature/src/lib/types"
+export * from "./feature/types/src/lib/types"

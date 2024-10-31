@@ -1,7 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
-import { AuthService } from 'api/src/auth/auth.service';
-import { AuthGuard } from 'api/src/auth/auth.guard';
-import { Public } from 'api/src/decorators/public';
+import { Controller, Get, Logger, Post, Request, Response, UnauthorizedException, UseGuards } from '@nestjs/common';
+import type { Request as RequestType, Response as ResponseType } from 'express';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import type { User } from '@app-types';
+import { Public } from './decorators/public';
 
 @Controller('auth')
 export class AuthController {
@@ -10,36 +13,40 @@ export class AuthController {
    *
    * @param authService - The service for authentication.
    */
-  constructor(
-    private authService: AuthService
-  ) {}
+  constructor(private readonly authService: AuthService) {}
   
   @Public()
-  @HttpCode(HttpStatus.OK)
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  /**
-   * Signs in the user.
-   *
-   * @param signInDto - The sign-in credentials. The `username` and `password` properties are required.
-   * @returns The JSON Web Token to be used for authentication.
-   */
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  async login(@Request() req: RequestType): Promise<{ access_token: string; }> {
+    if (process.env.NODE_ENV !== 'production') {
+      Logger.log(`${req.method}: ${req.originalUrl}`);
+      Logger.log(JSON.stringify(req.user));
+    }
+    
+    return this.authService.login(req.user)
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Request() req: RequestType, @Response() res: ResponseType): Promise<void> {
+    return req.logout((err) => {
+      if (err) {
+        if (process.env.NODE_ENV !== 'production') {
+          Logger.error(err);
+        }
+        throw new UnauthorizedException();
+      }
+
+      return {
+        message: 'Successfully logged out',
+      };
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
-  /**
-   * Retrieves the profile information of the authenticated user.
-   *
-   * @remarks
-   * The request object is injected with the user information by the
-   * {@link AuthGuard} when authentication is successful.
-   *
-   * @param req - The request object.
-   * @returns The user profile information.
-   */
-  getProfile(@Request() req: any) {
-    return req.user;
+  getProfile(@Request() req: RequestType): User {
+    return req.user as User;
   }
 }

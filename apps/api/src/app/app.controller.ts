@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import { Public } from 'api/src/decorators/public';
+import { Public } from '../auth/decorators/public';
 
 @Controller()
 export class AppController {
@@ -9,7 +9,7 @@ export class AppController {
 
   @Public()
   @Get()
-  getData() {
+  getData(): { message: string } {
     return this.appService.getData();
   }
 }
