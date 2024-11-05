@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AppLayout from './layouts/AppLayout';
 import LoginPage from './pages/LoginPage';
@@ -15,13 +15,25 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
-const App = () => {
+/**
+ * The main app component that wraps the entire app in an
+ * {@link AuthProvider} and sets up public and protected routes.
+ *
+ * The public route is just the login page, accessible at `/login`.
+ *
+ * The protected route is guarded by the {@link ProtectedRoute} component,
+ * which redirects to `/login` if the user is not authenticated. The protected
+ * route is the root route and has two child routes: `/dashboard` and `/settings`.
+ *
+ * @returns A JSX element that renders the app.
+ */
+const App = (): React.ReactElement => {
   return (
     <AuthProvider>
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
-        
+
         {/* Protected Routes */}
         <Route
           path="/"
@@ -38,6 +50,5 @@ const App = () => {
     </AuthProvider>
   );
 };
-
 
 export default App;
