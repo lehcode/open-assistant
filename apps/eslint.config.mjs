@@ -1,4 +1,3 @@
-// @ts-ignore
 import js from '@eslint/js';
 import * as nxPlugin from '@nx/eslint-plugin';
 import * as tsParser from '@typescript-eslint/parser';
@@ -24,6 +23,7 @@ export default [
       parser: tsParser,
       globals: {
         ...globals.node,
+        ...globals.jest
       },
     },
     rules: {

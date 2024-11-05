@@ -61,7 +61,12 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["api/**/*.ts", "api/**/*.tsx"],
+        "eslintConfig": "eslint.config.mjs",
+        "verbose": true
+      }
     }
   }
 }

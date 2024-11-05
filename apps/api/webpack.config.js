@@ -1,8 +1,7 @@
- 
-// @ts-nocheck
 const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const path = require('path');
 const { composePlugins, withNx } = require('@nx/webpack');
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 module.exports = composePlugins(withNx(), (config) => {
   config.output = {
@@ -32,6 +31,9 @@ module.exports = composePlugins(withNx(), (config) => {
         generatePackageJson: true,
         sourceMap: true,
         verbose: process.env['NODE_ENV'] === 'development' ? true : false,
+      }),
+      new ESLintPlugin({
+        configType: "flat",
       }),
     ],
   }

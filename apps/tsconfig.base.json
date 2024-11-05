@@ -31,8 +31,8 @@
     "verbatimModuleSyntax": false,
     "rootDir": ".",
     "paths": {
-      "@types": ["libs/feature/types/src/index.ts"],
-      "@interfaces": ["libs/feature/interfaces/src/index.ts"]
+      "@interfaces": ["libs/feature/interfaces/src/index.ts"],
+      "@types": ["libs/feature/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules/**", "tmp/**"]

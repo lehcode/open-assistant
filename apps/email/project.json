@@ -13,7 +13,7 @@
       "options": {
         "target": "web",
         "compiler": "tsc",
-        "outputPath": "../dist/email",
+        "outputPath": "dist/email",
         "main": "email/src/main.tsx",
         "tsConfig": "email/tsconfig.app.json",
         "assets": ["email/src/assets"],

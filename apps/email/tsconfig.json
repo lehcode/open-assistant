@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "module": "esnext",
@@ -10,7 +10,7 @@
     "useDefineForClassFields": true
   },
   "files": [],
-  "include": [],
+  "include": ["../libs/feature/**/src/*.ts"],
   "exclude": [],
   "references": [
     { "path": "./tsconfig.app.json" },
