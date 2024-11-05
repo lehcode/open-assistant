@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './app';
@@ -20,6 +19,6 @@ describe('App', () => {
         <App />
       </BrowserRouter>
     );
-    expect(getByText(/Welcome email/gi)).toBeTruthy();
+    expect(getByText(/Please sign in to your account/i)).toBeTruthy();
   });
 });

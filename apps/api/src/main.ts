@@ -10,13 +10,22 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   try {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, {
+      cors: {
+        origin: process.env.NODE_ENV === 'production' ||
+        process.env.NODE_ENV === 'staging'
+          ? true
+          : "http://localhost:4200",
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+      }
+    });
     const globalPrefix = 'api/v1';
     app.setGlobalPrefix(globalPrefix);
-    
+
     const port = process.env.PORT || 3000;
     const host = process.env.HOST || 'localhost';
-    
+
     // Handle shutdown gracefully
     process.on('SIGTERM', async () => {
       await app.close();
@@ -28,11 +37,11 @@ async function bootstrap() {
         secret: 'my-secret',
         resave: false,
         saveUninitialized: false,
-      }),
+      })
     );
 
     await app.listen(port);
-    
+
     Logger.log(
       `🚀 Application is running on: http://${host}:${port}/${globalPrefix}`
     );

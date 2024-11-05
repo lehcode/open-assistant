@@ -1,54 +1,43 @@
-import { Component } from 'react';
-import * as React from 'react';
-import NxWelcome from './nx-welcome';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import AppLayout from './layouts/AppLayout';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import SettingsPage from './pages/SettingsPage';
 
-import { Route, Routes, Link } from 'react-router-dom';
-
-export class App extends Component {
-  override render(): JSX.Element {
-    return (
-      <div>
-        <NxWelcome title="email" />
-
-        {/* START: routes */}
-        {/* These routes and navigation have been generated for you */}
-        {/* Feel free to move and update them to fit your needs */}
-        <br />
-        <hr />
-        <br />
-        <div role="navigation">
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/page-2">Page 2</Link>
-            </li>
-          </ul>
-        </div>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div>
-                This is the generated root route.{' '}
-                <Link to="/page-2">Click here for page 2.</Link>
-              </div>
-            }
-          />
-          <Route
-            path="/page-2"
-            element={
-              <div>
-                <Link to="/">Click here to go back to root page.</Link>
-              </div>
-            }
-          />
-        </Routes>
-        {/* END: routes */}
-      </div>
-    ) as JSX.Element;
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
-}
+  return children;
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        
+        {/* Protected Routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index path="dashboard" element={<DashboardPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
+  );
+};
+
 
 export default App;

@@ -1,23 +1,22 @@
-
 import { Injectable } from '@nestjs/common';
-import { User } from '@app-types';
+import { User } from '@types';
 
 // const bcrypt = require('bcrypt');
 // const saltRounds = 10;
 
 @Injectable()
-export class UserService {
+class UserService {
   private readonly users: User[] = [
     {
       id: 1,
-      username: 'admin',
-      password: '$ecret',
+      username: 'lehcode@gmail.com',
+      password: 'b*4dYA$zAvvnN#a%',
       salt: 'random',
     },
     {
       id: 2,
       username: 'john',
-      password: 'changeme',
+      password: '$ecret',
       salt: 'random',
     },
     {
@@ -28,8 +27,19 @@ export class UserService {
     },
   ];
 
-  
+  /**
+   * Finds a user by their username.
+   *
+   * This function searches through the list of users and returns the user object
+   * if a user with the specified username is found. If no user is found, it
+   * returns undefined.
+   *
+   * @param {string} username - The username of the user to find.
+   * @returns {Promise<User | undefined>} - A promise that resolves to the user object or undefined.
+   */
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+    return this.users.find((user) => user.username === username);
   }
 }
+
+export default UserService;
