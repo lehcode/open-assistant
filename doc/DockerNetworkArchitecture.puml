@@ -1,0 +1,196 @@
+@startuml
+
+' Hide class elements
+hide members
+hide circle
+
+' Custom styles
+skinparam rectangleFontSize 12
+skinparam packageFontSize 12
+skinparam databaseFontSize 12
+
+skinparam rectangle {
+    FontColor black
+    BorderColor #333333
+    BackgroundColor white
+}
+
+skinparam database {
+    FontColor black
+    BorderColor #333333
+    BackgroundColor white
+}
+
+skinparam package {
+    FontColor black
+    BorderColor #666666
+    BackgroundColor transparent
+}
+
+' Color definitions
+!define PRIMARY_COLOR #ff9966
+!define SECONDARY_COLOR #6699ff
+!define CACHE_COLOR #99ff66
+!define LB_COLOR #ff99ff
+!define SECURITY_COLOR #ff6666
+!define MONITOR_COLOR #ffcc66
+
+package "Host Machine (172.250.254.0/24)" {
+    package "Security Layer" {
+        rectangle "Web Application Firewall (WAF)" as WAF SECURITY_COLOR
+        rectangle "Rate Limiter" as RATELIMIT SECURITY_COLOR
+        rectangle "Auth Gateway" as AUTH SECURITY_COLOR
+    }
+
+    package "Monitoring & Observability" {
+        rectangle "Prometheus" as PROM MONITOR_COLOR
+        rectangle "Grafana" as GRAFANA MONITOR_COLOR
+        rectangle "ELK Stack" as ELK MONITOR_COLOR
+    }
+
+    package "Docker Overlay Network" {
+        package "Load Balancer & SSL" {
+            rectangle "Traefik" as TRAEFIK LB_COLOR
+            rectangle "Cert Manager" as CERT LB_COLOR
+        }
+
+        package "Frontend CDN" {
+            rectangle "CloudFront/CDN" as CDN SECONDARY_COLOR
+            rectangle "React Instance 1" as REACT1 SECONDARY_COLOR
+            rectangle "React Instance 2" as REACT2 SECONDARY_COLOR
+            rectangle "React Instance 3" as REACT3 SECONDARY_COLOR
+        }
+
+        package "API Services" {
+            package "API Gateway" {
+                rectangle "Rate Limiting" as API_RATE PRIMARY_COLOR
+                rectangle "Circuit Breaker" as API_CIRCUIT PRIMARY_COLOR
+            }
+            rectangle "API 1" as API1 PRIMARY_COLOR
+            rectangle "API 2" as API2 PRIMARY_COLOR
+            rectangle "API 3" as API3 PRIMARY_COLOR
+        }
+
+        package "Cache & Message" {
+            package "Redis Cluster" {
+                rectangle "Redis Master" as REDIS1 CACHE_COLOR
+                rectangle "Redis Replica 1" as REDIS2 CACHE_COLOR
+                rectangle "Redis Replica 2" as REDIS3 CACHE_COLOR
+            }
+            rectangle "Redis Sentinel" as REDIS_SENTINEL CACHE_COLOR
+        }
+
+        package "Search & Analytics" {
+            rectangle "Elasticsearch Master" as ES PRIMARY_COLOR
+            rectangle "Elasticsearch Data 1" as ES1 SECONDARY_COLOR
+            rectangle "Elasticsearch Data 2" as ES2 SECONDARY_COLOR
+        }
+
+        package "Databases" {
+            package "PostgreSQL HA" {
+                database "Primary" as PG_PRIMARY PRIMARY_COLOR
+                database "Replica 1" as PG_REPLICA1 SECONDARY_COLOR
+                database "Replica 2" as PG_REPLICA2 SECONDARY_COLOR
+                rectangle "PgPool-II" as PGPOOL PRIMARY_COLOR
+            }
+
+            package "MongoDB Replica Set" {
+                database "Primary" as MONGO_PRIMARY PRIMARY_COLOR
+                database "Secondary 1" as MONGO_SEC1 SECONDARY_COLOR
+                database "Secondary 2" as MONGO_SEC2 SECONDARY_COLOR
+                rectangle "Mongo Express" as MONGO_EXPRESS PRIMARY_COLOR
+            }
+        }
+
+        package "Backup & Recovery" {
+            rectangle "Backup Service" as BACKUP MONITOR_COLOR
+            database "Backup Storage" as BACKUP_STORE MONITOR_COLOR
+        }
+    }
+}
+
+' External connections
+actor "Internet" as INTERNET
+actor "Admin" as ADMIN
+actor "DevOps" as DEVOPS
+
+' Security flow
+INTERNET --> WAF
+WAF --> RATELIMIT
+RATELIMIT --> AUTH
+AUTH --> TRAEFIK
+
+' Admin connections
+ADMIN --> AUTH
+DEVOPS --> AUTH
+
+' Service mesh
+TRAEFIK --> CDN
+CDN --> REACT1
+CDN --> REACT2
+CDN --> REACT3
+
+TRAEFIK --> API_RATE
+API_RATE --> API_CIRCUIT
+API_CIRCUIT --> API1
+API_CIRCUIT --> API2
+API_CIRCUIT --> API3
+
+' API connections
+API1 -[#blue]-> REDIS_SENTINEL
+API2 -[#blue]-> REDIS_SENTINEL
+API3 -[#blue]-> REDIS_SENTINEL
+REDIS_SENTINEL --> REDIS1
+REDIS1 --> REDIS2
+REDIS1 --> REDIS3
+
+API1 -[#green]-> ES
+API2 -[#green]-> ES
+API3 -[#green]-> ES
+ES --> ES1
+ES --> ES2
+
+API1 -[#red]-> PGPOOL
+API2 -[#red]-> PGPOOL
+API3 -[#red]-> PGPOOL
+PGPOOL --> PG_PRIMARY
+PG_PRIMARY --> PG_REPLICA1
+PG_PRIMARY --> PG_REPLICA2
+
+API1 -[#orange]-> MONGO_EXPRESS
+API2 -[#orange]-> MONGO_EXPRESS
+API3 -[#orange]-> MONGO_EXPRESS
+MONGO_EXPRESS --> MONGO_PRIMARY
+MONGO_PRIMARY --> MONGO_SEC1
+MONGO_PRIMARY --> MONGO_SEC2
+
+' Monitoring connections
+PROM -[#brown]-> TRAEFIK
+PROM -[#brown]-> API1
+PROM -[#brown]-> API2
+PROM -[#brown]-> API3
+PROM -[#brown]-> REDIS1
+PROM -[#brown]-> ES
+PROM -[#brown]-> PG_PRIMARY
+PROM -[#brown]-> MONGO_PRIMARY
+GRAFANA -[#brown]-> PROM
+ELK -[#brown]-> TRAEFIK
+
+' Backup connections
+BACKUP --> PG_PRIMARY
+BACKUP --> MONGO_PRIMARY
+BACKUP --> ES
+BACKUP --> REDIS1
+BACKUP --> BACKUP_STORE
+
+legend right
+|= Type |= Component |
+|<PRIMARY_COLOR>| Primary Services |
+|<SECONDARY_COLOR>| Secondary/Replicas |
+|<CACHE_COLOR>| Cache Services |
+|<LB_COLOR>| Load Balancer |
+|<SECURITY_COLOR>| Security Services |
+|<MONITOR_COLOR>| Monitoring & Backup |
+endlegend
+
+@enduml

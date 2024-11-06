@@ -1,0 +1,136 @@
+@startuml "Network Diagram"
+
+!define RECTANGLE class
+
+' Custom styles
+skinparam rectangle {
+    BackgroundColor<<primary>> #ff9966
+    BorderColor<<primary>> #333333
+    BorderThickness<<primary>> 2
+    
+    BackgroundColor<<secondary>> #6699ff
+    BorderColor<<secondary>> #333333
+    BorderThickness<<secondary>> 2
+    
+    BackgroundColor<<cache>> #99ff66
+    BorderColor<<cache>> #333333
+    BorderThickness<<cache>> 2
+    
+    BackgroundColor<<lb>> #ff99ff
+    BorderColor<<lb>> #333333
+    BorderThickness<<lb>> 2
+    
+    BackgroundColor<<external>> #ffffff
+    BorderColor<<external>> #333333
+    BorderThickness<<external>> 2
+}
+
+' Host Machine
+rectangle "Host Machine (172.250.254.0/24)" {
+    ' Exposed Ports
+    rectangle "Exposed Ports" {
+        rectangle "Port 80 - Traefik" as PORT80
+        rectangle "Port 8080 - Traefik Dashboard" as PORT8080
+    }
+
+    ' Docker Overlay Network
+    rectangle "Docker Overlay Network (assistant_lan)" {
+        ' Load Balancer Layer
+        rectangle "Load Balancer Layer" {
+            rectangle "Traefik" as TRAEFIK <<lb>>
+        }
+
+        ' Frontend Layer
+        rectangle "Frontend Layer" {
+            rectangle "React Instance 1" as REACT1 <<secondary>>
+            rectangle "React Instance 2" as REACT2 <<secondary>>
+        }
+
+        ' API Layer
+        rectangle "API Layer" {
+            rectangle "API Instance 1" as API1 <<primary>>
+            rectangle "API Instance 2" as API2 <<primary>>
+            rectangle "API Instance 3" as API3 <<primary>>
+        }
+
+        ' Cache Layer
+        rectangle "Cache Layer" {
+            rectangle "Redis Node 1" as REDIS1 <<cache>>
+            rectangle "Redis Node 2" as REDIS2 <<cache>>
+            rectangle "Redis Node 3" as REDIS3 <<cache>>
+        }
+
+        ' Search Layer
+        rectangle "Search Layer" {
+            rectangle "Elasticsearch" as ES <<primary>>
+        }
+
+        ' Database Layer
+        rectangle "Database Layer" {
+            ' PostgreSQL Cluster
+            rectangle "PostgreSQL Cluster" {
+                rectangle "PostgreSQL Primary" as PG_PRIMARY <<primary>>
+                rectangle "PostgreSQL Replica 1" as PG_REPLICA1 <<secondary>>
+                rectangle "PostgreSQL Replica 2" as PG_REPLICA2 <<secondary>>
+            }
+
+            ' MongoDB Replica Set
+            rectangle "MongoDB Replica Set" {
+                rectangle "MongoDB Primary" as MONGO_PRIMARY <<primary>>
+                rectangle "MongoDB Secondary 1" as MONGO_SEC1 <<secondary>>
+                rectangle "MongoDB Secondary 2" as MONGO_SEC2 <<secondary>>
+            }
+        }
+    }
+}
+
+' External actors
+actor "Internet" as INTERNET <<external>>
+actor "Admin" as ADMIN <<external>>
+
+' External connections
+INTERNET --> PORT80
+ADMIN --> PORT8080
+
+' Internal connections
+PORT80 --> TRAEFIK
+PORT8080 --> TRAEFIK
+
+' Traefik to services
+TRAEFIK --> REACT1
+TRAEFIK --> REACT2
+TRAEFIK --> API1
+TRAEFIK --> API2
+TRAEFIK --> API3
+
+' API to Cache
+API1 --> REDIS1
+API1 --> REDIS2
+API1 --> REDIS3
+API2 --> REDIS1
+API2 --> REDIS2
+API2 --> REDIS3
+API3 --> REDIS1
+API3 --> REDIS2
+API3 --> REDIS3
+
+' API to Search
+API1 --> ES
+API2 --> ES
+API3 --> ES
+
+' API to Databases
+API1 --> PG_PRIMARY
+API2 --> PG_PRIMARY
+API3 --> PG_PRIMARY
+API1 --> MONGO_PRIMARY
+API2 --> MONGO_PRIMARY
+API3 --> MONGO_PRIMARY
+
+' Database replication
+PG_PRIMARY --> PG_REPLICA1
+PG_PRIMARY --> PG_REPLICA2
+MONGO_PRIMARY --> MONGO_SEC1
+MONGO_PRIMARY --> MONGO_SEC2
+
+@enduml
