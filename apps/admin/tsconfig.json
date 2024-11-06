@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "module": "ES2022",
     "lib": ["dom"],
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "composite": true
   },
   "files": [],
   "include": [],

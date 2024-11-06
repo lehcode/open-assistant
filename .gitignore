@@ -149,3 +149,4 @@ sketch
 .idea/
 
 .vscode/
+supabase/config.toml
