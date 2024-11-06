@@ -7,4 +7,8 @@ const app = createApp(App);
 
 app.use(router);
 
+app.config.errorHandler = (err) => {
+  console.log(err);
+}
+
 app.mount('#root');
