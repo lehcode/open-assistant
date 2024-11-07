@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style lang="css">
 @media (min-width: 768px) {
   .about {
     max-width: 768px;

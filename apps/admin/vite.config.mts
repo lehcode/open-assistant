@@ -44,8 +44,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@open-assistant/interfaces": resolve(__dirname, "../libs/shared/interfaces/src/index.ts"),
+      "@open-assistant/services": resolve(__dirname, "../libs/shared/services/src/index.ts"),
       "@open-assistant/types": resolve(__dirname, "../libs/shared/types/src/index.ts"),
-      "@open-assistant/services": resolve(__dirname, "../libs/feature/services/src/index.ts"),
     }
   },
 });
