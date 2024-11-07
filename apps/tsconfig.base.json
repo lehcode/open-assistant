@@ -32,7 +32,7 @@
     "rootDir": ".",
     "paths": {
       "@open-assistant/interfaces": ["libs/shared/interfaces/src/index.ts"],
-      "@open-assistant/services": ["libs/feature/src/index.ts"],
+      "@open-assistant/services": ["libs/shared/services/src/index.ts"],
       "@open-assistant/types": ["libs/shared/types/src/index.ts"]
     }
   },
