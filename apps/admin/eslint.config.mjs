@@ -12,9 +12,16 @@ export default [
     languageOptions: {
       parserOptions: { parser: tsParser },
     },
+    rules: {
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+    }
   },
   {
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.vue"],
-    rules: { "vue/multi-word-component-names": "off" },
+    files: ["**/*.ts", "**/*.tsx", "**/*.vue"],
+    rules: { 
+      "vue/multi-word-component-names": "off",
+      'no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+    },
   },
 ];
