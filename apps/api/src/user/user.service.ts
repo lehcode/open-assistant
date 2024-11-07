@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@types';
+import { User } from '@open-assistant/types';
 
 // const bcrypt = require('bcrypt');
 // const saltRounds = 10;

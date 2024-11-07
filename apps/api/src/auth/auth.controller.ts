@@ -2,7 +2,7 @@ import { Controller, Get, Logger, Post, Request, Response, UseGuards } from '@ne
 import type { Request as RequestType, Response as ResponseType } from 'express';
 import AuthService from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import type { LoginResponse, User } from '@types';
+import type { LoginResponse, User } from '@open-assistant/types';
 import { Public } from './decorators/public';
 
 @Controller('auth')

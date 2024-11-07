@@ -45,3 +45,5 @@ Thumbs.db
 
 .vscode
 apps/api/src/environments/*.local.ts
+
+vite.config.*.timestamp*

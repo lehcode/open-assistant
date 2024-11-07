@@ -1,4 +1,4 @@
-import { IBaseResponse, ILoginRequest, ILoginResponse } from '@interfaces';
+import { IBaseResponse, ILoginRequest, ILoginResponse } from '@open-assistant/interfaces';
 
 export type User = {
   id: number;

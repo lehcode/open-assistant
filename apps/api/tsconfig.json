@@ -4,7 +4,8 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../libs/feature" },
+    { "path": "../libs/shared/types" },
+    { "path": "../libs/shared/interfaces" },
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.spec.json" }
   ],

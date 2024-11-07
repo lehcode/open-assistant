@@ -6,22 +6,15 @@
     "strict": true,
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "module": "ES2022",
-    "lib": ["dom"],
+    "resolveJsonModule": false,
     "useDefineForClassFields": true,
     "composite": true
   },
   "files": [],
   "include": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
   ],
   "extends": "../tsconfig.base.json"
 }
