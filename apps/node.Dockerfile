@@ -30,9 +30,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     echo "${user}    ALL=(ALL:ALL)     NOPASSWD:ALL" | tee --append /etc/sudoers && \
     if [ -z "${debug}" ]; then apt cache clear > /dev/null; fi
 
-COPY entrypoint.sh /docker-compose.d/docker-entrypoint.sh
-RUN chmod +x /docker-compose.d/docker-entrypoint.sh
-
 USER ${user}:docker
 WORKDIR ${app_root}
 
@@ -47,5 +44,3 @@ RUN if [ -n "${debug}" ]; then set -eux; fi && \
     sudo chown -R ${user}:docker .
 
 RUN if [ -z "${debug}" ]; then yarn cache clean --all; fi
-
-#ENTRYPOINT [ "/docker-compose.d/docker-entrypoint.sh" ]
