@@ -1,5 +1,5 @@
-import { Controller, Get, Logger, Post, Request, Response, UseGuards } from '@nestjs/common';
-import type { Request as RequestType, Response as ResponseType } from 'express';
+import { Controller, Get, Logger, Post, Request, UseGuards } from '@nestjs/common';
+import type { Request as RequestType } from 'express';
 import AuthService from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import type { LoginResponse, User } from '@open-assistant/types';
@@ -38,7 +38,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Request() req: RequestType, @Response() res: ResponseType): Promise<void> {
+  async logout(@Request() req: RequestType): Promise<void> {
     return req.logout({keepSessionInfo: true}, (err) => {
       if (err) {
         if (process.env.NODE_ENV !== 'production') {
