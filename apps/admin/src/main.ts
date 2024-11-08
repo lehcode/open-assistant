@@ -9,6 +9,6 @@ app.use(router);
 
 app.config.errorHandler = (err) => {
   console.log(err);
-}
+};
 
 app.mount('#root');

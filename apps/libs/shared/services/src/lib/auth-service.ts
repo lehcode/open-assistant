@@ -36,9 +36,16 @@ export class AuthService {
     return result;
   }
 
-  storeUserToken(username: string, token: string): void {
-    localStorage.setItem(username, token);
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('authToken');
   }
+
+  storeUserToken(username: string, token: string): void {
+    localStorage.setItem('username', username);
+    localStorage.setItem('authToken', token);
+  }
+
+
 }
 
 export default AuthService;

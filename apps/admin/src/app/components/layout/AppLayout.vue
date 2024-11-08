@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Navbar from './Navbar.vue';
-import Sidebar from './Sidebar.vue';
+import { ref } from "vue";
+import Sidebar from "./Sidebar.vue";
 
-const isAuthenticated = false;
+const isAuthenticated = ref(false);
 </script>
 
 <template>
@@ -10,7 +10,6 @@ const isAuthenticated = false;
     v-if="isAuthenticated"
     class="min-h-screen bg-gray-100"
   >
-    <Navbar />
     <div class="flex h-[calc(100vh-64px)]">
       <Sidebar />
       <section class="flex-1 overflow-auto p-6">
