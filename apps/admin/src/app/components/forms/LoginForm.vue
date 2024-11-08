@@ -1,17 +1,18 @@
-
 <script setup lang="ts">
-import { LoginRequest } from '@open-assistant/types';
-import { ref } from 'vue';
-import { Eye, EyeOff, LogIn, Lock, Mail } from 'lucide-vue-next';
+import { LoginRequest } from "@open-assistant/types";
+import { reactive, ref } from "vue";
+import { Eye, EyeOff, LogIn, Lock, Mail } from "lucide-vue-next";
 
-const loginRequest: LoginRequest = {
-  username: '',
-  password: '',
-  rememberMe: false
-};
-
-const emit = defineEmits(['submit']);
+const props = defineProps<{ requestData: LoginRequest }>();
+const emit = defineEmits<{
+  (e: 'submit', formData: LoginRequest): void
+}>();
 const showPassword = ref(false);
+const loginRequest = reactive<LoginRequest>({ ...props.requestData });
+
+const handleSubmit = () => {
+  emit("submit", loginRequest);
+};
 </script>
 
 <template>
@@ -25,10 +26,10 @@ const showPassword = ref(false);
           Please sign in to your account
         </p>
       </div>
-      
+
       <form
         class="mt-8 space-y-6"
-        @submit.prevent="emit('submit', loginRequest)"
+        @submit.prevent="handleSubmit"
       >
         <div className="space-y-4">
           <div>
@@ -47,14 +48,12 @@ const showPassword = ref(false);
                 type="email"
                 autoComplete="email"
                 required
-                class="block w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                  text-gray-900 placeholder-gray-400"
+                class="block w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
                 placeholder="your@email"
               >
             </div>
           </div>
-        
+
           <div>
             <label
               for="password"
@@ -71,9 +70,7 @@ const showPassword = ref(false);
                 :type="showPassword ? 'text' : 'password'"
                 autoComplete="current-password"
                 required
-                class="block w-full pl-10 pr-10 px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                  text-gray-900 placeholder-gray-400"
+                class="block w-full pl-10 pr-10 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
                 placeholder="••••••••"
               >
             </div>

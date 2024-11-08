@@ -2,6 +2,7 @@
 import { reactive } from "vue";
 import LoginForm from "../components/forms/LoginForm.vue";
 import { useAuth } from "../composables/auth";
+import { LoginRequest } from "@open-assistant/types";
 
 const loginRequest = reactive({
   username: "",
@@ -9,11 +10,13 @@ const loginRequest = reactive({
   rememberMe: false
 })
 
-const handleLogin = async () => {
+const handleLogin = async (formData: LoginRequest) => {
   try {
-    const result = await useAuth().provideLogin(loginRequest);
+    debugger;
+    const result = await useAuth().provideLogin(formData);
     
     if (result.success) {
+      debugger;
       // redirect to dashboard
       // this.$router.push('/dashboard');
     }
@@ -26,8 +29,8 @@ const handleLogin = async () => {
 <template>
   <main className="min-h-screen bg-gray-100">
     <LoginForm
-      v-model="loginRequest"
-      @submit.prevent="handleLogin()"
+      :request-data="loginRequest"
+      @submit="handleLogin"
     />
   </main>
 </template>
