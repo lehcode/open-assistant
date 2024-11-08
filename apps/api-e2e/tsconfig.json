@@ -3,8 +3,6 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../libs/shared/types" },
-    { "path": "../libs/shared/interfaces" },
     { "path": "./tsconfig.spec.json" }
   ],
   "compilerOptions": {

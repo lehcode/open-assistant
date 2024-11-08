@@ -5,7 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "declarationMap": false,
     "declaration": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -30,11 +30,10 @@
     "strict": true,
     "verbatimModuleSyntax": false,
     "rootDir": ".",
+    "outDir": "dist/out-tsc",
     "paths": {
-      "@open-assistant/interfaces": ["libs/shared/interfaces/src/index.ts"],
-      "@open-assistant/services": ["libs/shared/services/src/index.ts"],
-      "@open-assistant/types": ["libs/shared/types/src/index.ts"]
+      "@lib/shared": ["libs/shared/src/index.ts"]
     }
   },
-  "exclude": ["node_modules/**", "tmp/**"]
+  "exclude": ["tmp/**"]
 }

@@ -20,8 +20,11 @@ export default [
     files: ["**/*.ts", "**/*.tsx", "**/*.vue"],
     rules: { 
       "vue/multi-word-component-names": "off",
-      'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["off"],
     },
   },
+  {
+    files: ["**/*.ts", "**/*.tsx", "**/*.vue"],
+  }
 ];

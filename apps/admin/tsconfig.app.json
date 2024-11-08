@@ -14,5 +14,4 @@
     "src/**/*.test.tsx",
     "src/**/*.spec.tsx"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.vue"]
 }

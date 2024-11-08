@@ -72,14 +72,7 @@
     },
     {
       "plugin": "@nx/js/typescript",
-      "include": [
-        "libs/shared/types/*",
-        "libs/shared/interfaces/*",
-        "libs/feature/services/*",
-        "libs/feature/*",
-        "libs/services/*",
-        "libs/shared/services/*"
-      ],
+      "include": ["libs/shared/*"],
       "options": {
         "typecheck": {
           "targetName": "typecheck"

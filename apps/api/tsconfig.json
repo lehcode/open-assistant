@@ -4,13 +4,12 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../libs/shared/types" },
-    { "path": "../libs/shared/interfaces" },
+    { "path": "../libs/shared/tsconfig.lib.json" },
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.spec.json" }
   ],
   "compilerOptions": {
-    "esModuleInterop": true
+    "esModuleInterop": true,
   },
   "webpackConfig": "./webpack.config.js"
 }

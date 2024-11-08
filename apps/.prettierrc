@@ -6,7 +6,7 @@
   "printWidth": 120,
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.tsx", ".mts"],
       "options": {
         "singleQuote": true,
         "semi": true,
@@ -32,16 +32,31 @@
     },
     {
       "files": ["*.json"],
-      "options": {}
+      "options": {
+        "printWidth": 80,
+        "tabWidth": 2
+      }
     },
     {
       "files": ["*.yml", "*.yaml"],
-      "options": {}
+      "options": {
+        "printWidth": 80
+      }
     },
     {
-      "files": ".prettierrc",
-      "options": { 
-        "parser": "json"
+      "files": [".prettierrc"],
+      "options": {
+        "parser": "json",
+        "printWidth": 80,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": [".vue"],
+      "options": {
+        "parser": "vue",
+        "printWidth": 80,
+        "singleQuote": true
       }
     }
   ]
