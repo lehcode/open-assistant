@@ -2,38 +2,35 @@ import { LoginRequest, LoginResponse, User } from '@open-assistant/types';
 import { Ref, ref } from 'vue';
 import { AuthService } from '@open-assistant/services';
 
-const user = ref(null);
-const isAuthenticated = ref(false);
 const authService = new AuthService();
+
+const user = ref<User>({
+  id: 0,
+  username: ''
+});
+const isAuthenticated = ref(false);
 
 const provideLogin = async (
   formData: LoginRequest
 ): Promise<LoginResponse> => {
   let username = '';
-  let token: string | undefined = undefined;
+  let access_token: string | undefined = undefined;
 
   try {
     const response = await authService.login(formData);
 
     if ('access_token' in response && 'username' in response) {
-      try {
-        token = response.access_token as string;
-        username = response.username as string;
-        authService.storeUserToken(username, token);
-        setIsAuthenticated(true);
+      access_token = response.access_token as string;
+      username = response.username as string;
+      authService.storeUserToken(username, access_token);
+      isAuthenticated.value = true;
 
-        return {
-          success: true,
-          username: username,
-          access_token: token,
-          error: undefined,
-        };
-      } catch (error: Error | unknown) {
-        return {
-          success: false,
-          error: (error as Error).message,
-        };
-      }
+      return {
+        success: true,
+        username,
+        access_token,
+        error: undefined,
+      };
     } else if ('error' in response) {
       return {
         success: false,
@@ -55,8 +52,8 @@ const provideLogin = async (
 };
 
 const provideLogout = () => {
-  // setUser(null);
-  // setIsAuthenticated(false);
+  authService.logout();
+  isAuthenticated.value = false;
 };
 
 const useAuth = (): {

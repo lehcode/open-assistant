@@ -28,7 +28,7 @@ class AuthService {
 
     if (user && user.password === pass) {
       const { id, username } = user;
-      return { id: user.id, username: user.username };
+      return { id, username };
     }
 
     return null;

@@ -6,8 +6,16 @@ import { BaseResponse, LoginRequest, LoginResponse } from '@open-assistant/types
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/v1';
 
+  /**
+   * Attempt to log in the user with the given credentials.
+   *
+   * @param credentials The username and password to use for the login.
+   * @returns A promise that resolves to the user data on success, or a
+   *          "BaseResponse" object with an error message on failure.
+   */
   async login(credentials: LoginRequest): Promise<LoginResponse | BaseResponse> {
     try {
+      debugger;
       const response = await fetch(`${this.apiUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

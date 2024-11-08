@@ -15,7 +15,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   
   @Public()
-  // @UseGuards(LocalAuthGuard)
   @Post('login')
   /**
    * Log in with the given user.

@@ -10,12 +10,12 @@ class UserService {
     {
       id: 1,
       username: 'lehcode@gmail.com',
-      password: 'b*4dYA$zAvvnN#a%',
+      password: '$ecret',
       salt: 'random',
     },
     {
       id: 2,
-      username: 'john',
+      username: 'admin',
       password: '$ecret',
       salt: 'random',
     },

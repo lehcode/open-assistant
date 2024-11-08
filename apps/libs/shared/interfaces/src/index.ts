@@ -1,1 +1,2 @@
-export * from './lib/interfaces';
+export * from './lib/base.interfaces';
+export * from './lib/auth/auth.interfaces';
