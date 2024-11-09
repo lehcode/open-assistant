@@ -3,17 +3,12 @@ import * as nxPlugin from "@nx/eslint-plugin";
 import * as tsParser from "@typescript-eslint/parser";
 import globals from "globals";
 import * as jsoncParser from "jsonc-eslint-parser";
-import vueTSConfig from "@vue/eslint-config-typescript";
-
-// console.log(nxPlugin);
-// console.log(vueTSConfig.overrides);
 
 export default [
   js.configs.recommended,
   ...nxPlugin.default.configs["flat/base"],
   ...nxPlugin.default.configs["flat/typescript"],
   ...nxPlugin.default.configs["flat/javascript"],
-  ...vueTSConfig.overrides,
   // ...nxPlugin.default.configs['flat/react-base'],
   // ...nxPlugin.default.configs['flat/react-jsx'],
   // ...nxPlugin.default.configs['flat/react-typescript'],
@@ -26,10 +21,22 @@ export default [
       globals: {
         ...globals.node,
         ...globals.jest,
+        ...globals.vitest,
       },
     },
     rules: {
-      "@typescript-eslint/explicit-module-boundary-types": ["error"],
+      "@typescript-eslint/explicit-module-boundary-types": [
+        "error",
+        {
+          allowArgumentsExplicitlyTypedAsAny: true, // Allow arguments explicitly typed as <any>
+          allowDirectConstAssertionInArrowFunctions: true, // Allow direct const assertions in arrow functions
+          allowHigherOrderFunctions: true, // Allow higher-order functions
+        },
+      ],
+      'semi': ['error', 'always'], // Require semicolons
+      'no-unused-vars': 'warn', // Warn on unused variables
+      "no-undef": "warn", // Warn on undefined variables
+      "no-debugger": "warn", // Warn on debugger statements
     },
   },
   {
@@ -61,9 +68,7 @@ export default [
     files: ["**/*.ts", "**/*.tsx"],
     // Override or add rules here
     rules: {
-      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["off"],
-      "no-undef": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
     },
   },
