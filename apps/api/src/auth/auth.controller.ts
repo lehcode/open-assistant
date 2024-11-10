@@ -2,49 +2,58 @@ import { Controller, Get, Logger, Post, Request, UseGuards } from '@nestjs/commo
 import type { Request as RequestType } from 'express';
 import AuthService from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import type { LoginResponse, User } from '@open-assistant/types';
+import type { LoginResponse, User } from '@lib/shared';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from './decorators/public';
 
 @Controller('auth')
 export class AuthController {
-  /**
-   * Constructor.
-   *
-   * @param authService - The service for authentication.
-   */
   constructor(private readonly authService: AuthService) {}
-  
+
+  // @UseGuards(LocalAuthGuard)
   @Public()
   @Post('login')
   /**
-   * Log in with the given user.
+   * Handles user login.
    *
-   * The function will make a POST request to the login endpoint with the given
-   * user. If the login is successful, the function will return a login response
-   * with the user's token and username. If the login fails, the function will
-   * return a login response with an error message.
+   * This function processes a login request. It logs request details in non-production
+   * environments and uses the `AuthService` to authenticate the user.
    *
-   * @param {Request} req - The request with the user to log in with.
-   * @returns {Promise<LoginResponse>} - A promise with the login response.
+   * @param {RequestType} req - The Express request object containing the login credentials.
+   * @returns {Promise<AuthTypes.LoginResponse>} A promise that resolves to a LoginResponse object.
+   *                                   This includes a token and username on successful login,
+   *                                   or an error message on failure.
    */
   async login(@Request() req: RequestType): Promise<LoginResponse> {
     if (process.env.NODE_ENV !== 'production') {
       Logger.log(`${req.method}: ${req.originalUrl}`);
       Logger.log(JSON.stringify(req.body));
     }
-      
-    return this.authService.login(req.body as User)
+
+    return this.authService.login(req.body as User);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
+  /**
+   * Logs out the authenticated user.
+   *
+   * This function handles the logout process for an authenticated user. It's protected
+   * by `JwtAuthGuard` to ensure only authenticated users can access it. The function
+   * uses the `logout()` method provided by the `request` object, maintaining session info.
+   *
+   * @param {RequestType} req - The Express `Request` object containing the logout method.
+   * @returns {Promise<void>} A `Promise` that resolves when the logout process is complete.
+   *                          The actual return value (success or error message) is passed
+   *                          to the client via the callback function.
+   */
   async logout(@Request() req: RequestType): Promise<void> {
-    return req.logout({keepSessionInfo: true}, (err) => {
+    return req.logout({ keepSessionInfo: true }, (err) => {
       if (err) {
         if (process.env.NODE_ENV !== 'production') {
           Logger.error(err);
         }
-        
+
         return {
           success: false,
           message: 'Not authorized',
@@ -60,6 +69,17 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  /**
+   * Retrieves the profile of the authenticated user.
+   *
+   * This function is protected by JwtAuthGuard, ensuring that only authenticated
+   * users can access it. It returns the user object associated with the current request.
+   *
+   * @param {RequestType} req - The Express request object, which contains the user
+   *                            information after successful authentication.
+   * @returns {User} The UserTypes.User object representing the authenticated user's profile.
+   *                 This object is extracted from the request's user property.
+   */
   getProfile(@Request() req: RequestType): User {
     return req.user as User;
   }

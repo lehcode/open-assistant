@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '../app/views/LoginView.vue';
 import HomeView from '../app/views/HomeView.vue';
 import AboutView from '../app/views/AboutView.vue';
 import LoginPage from '../app/pages/LoginPage.vue';
-import { AuthService } from '@open-assistant/services';
+import { AuthService } from '../app/services/auth.service';
 import 'vue-router';
 
 const router = createRouter({
@@ -40,6 +41,11 @@ const router = createRouter({
       component: () => import('../app/pages/AppConfigPage.vue'),
       meta: { protected: true },
       children: [],
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
   ],
 });

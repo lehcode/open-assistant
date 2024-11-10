@@ -6,3 +6,6 @@ export type User = {
   salt?: string;
   access_token?: string;
 };
+
+
+export type AuthCredentials = Pick<User, 'username' | 'access_token'>

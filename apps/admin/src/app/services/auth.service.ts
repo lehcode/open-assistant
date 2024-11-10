@@ -1,7 +1,7 @@
 
 // import { Observable, of } from 'rxjs';
 // import { map, catchError } from 'rxjs/operators';
-import { BaseResponse, LoginRequest, LoginResponse } from '@open-assistant/types'
+import { BaseResponse, LoginRequest, LoginResponse } from '@lib/shared';
 
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/v1';
@@ -15,7 +15,6 @@ export class AuthService {
    */
   async login(credentials: LoginRequest): Promise<LoginResponse | BaseResponse> {
     try {
-      debugger;
       const response = await fetch(`${this.apiUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

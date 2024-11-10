@@ -1,4 +1,4 @@
-import { IBaseResponse } from '../base.interfaces';
+import { IBaseResponse } from './base.interfaces';
 
 export interface ILoginResponse extends IBaseResponse {
   username?: string;

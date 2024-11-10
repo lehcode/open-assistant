@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import { LoginRequest } from "@open-assistant/types";
+import { LoginRequest } from "@lib/shared";
 import { reactive, ref } from "vue";
 import { Eye, EyeOff, LogIn, Lock, Mail } from "lucide-vue-next";
 
-const props = defineProps<{ requestData: LoginRequest }>();
+
 const emit = defineEmits<{
   (e: 'submit', formData: LoginRequest): void
 }>();
-const showPassword = ref(false);
-const loginRequest = reactive<LoginRequest>({ ...props.requestData });
+const showPassword = ref<boolean>(false);
+const loginRequest = reactive<LoginRequest>({
+  username: "",
+  password: "",
+  rememberMe: false
+});
 
+/**
+ * Emits the "submit" event with the current login request data.
+ */
 const handleSubmit = () => {
+  debugger;
   emit("submit", loginRequest);
 };
 </script>

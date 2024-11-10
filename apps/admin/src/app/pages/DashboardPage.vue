@@ -5,7 +5,7 @@ import {
   DollarSign,
   ArrowUpRight,
   Clock,
-} from 'lucide-react';
+} from 'lucide-vue-next';
 
 const recentActivity = [
   {

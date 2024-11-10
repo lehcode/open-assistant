@@ -3,7 +3,7 @@ import AuthService from './auth.service';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import UserService from '../user/user.service';
-import { User } from '@types';
+import { User } from '@lib/shared';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -30,12 +30,13 @@ describe('AuthService', () => {
   });
 
   it('should return null when the username does not exist', async () => {
-    const userMock = {
+    const userMock: User = {
       username: 'nonexistingUser@gmail.com',
       password: 'testPassword',
+      id: 0
     };
 
-    jest.spyOn(userService, 'findOne').mockResolvedValue(userMock as User);
+    jest.spyOn(userService, 'findOne').mockResolvedValue(userMock);
 
     const result = await authService.validateUser(
       'nonexistentUser',
@@ -46,13 +47,13 @@ describe('AuthService', () => {
   });
 
   it('should return null when the password is incorrect', async () => {
-    const userMock = {
+    const userMock: User = {
       id: 999,
       username: 'testUser',
       password: 'testPassword',
     };
 
-    jest.spyOn(userService, 'findOne').mockResolvedValue(userMock as User);
+    jest.spyOn(userService, 'findOne').mockResolvedValue(userMock);
 
     const result = await authService.validateUser('testUser', 'wrongPassword');
 

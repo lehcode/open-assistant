@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
-import { LoginResponse, User } from '@types';
+import { LoginResponse, User } from '@lib/shared';
 import AuthService from './auth.service';
 import { Request } from 'express';
 import UserService from '../user/user.service';

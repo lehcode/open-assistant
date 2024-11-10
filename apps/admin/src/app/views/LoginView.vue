@@ -1,38 +1,35 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref } from "vue";
 import LoginForm from "../components/forms/LoginForm.vue";
-import { useAuth } from "../composables/auth";
-import { LoginRequest } from "@open-assistant/types";
-import { useRouter } from "vue-router";
+import { useAuth } from "../composables/useAuth";
+import { LoginRequest } from "@lib/shared";
+import { useUserStore } from "../stores/user.store";
 
-const loginRequest = reactive({
-  username: "",
-  password: "",
-  rememberMe: false
-});
-const router = useRouter();
+
+const messageStore = useUserStore();
+
+let validUser = ref(false);
 
 const handleLogin = async (formData: LoginRequest) => {
   try {
-    debugger;
     const result = await useAuth().provideLogin(formData);
 
+    debugger;
+
     if (result.success) {
-      debugger;
-      // redirect to dashboard
-      router.push('/dashboard');
+      validUser.value = true;
+      messageStore.updateAuthorized(true);
+    } else {
+      messageStore.updateAuthorized(false);
     }
-  } catch (error) {
-    console.error("Login failed:", error);
+  } catch (error: any) {
+    throw new Error("Login failed:", error.message);
   }
 };
 </script>
 
 <template>
   <main className="min-h-screen bg-gray-100">
-    <LoginForm
-      :request-data="loginRequest"
-      @submit="handleLogin"
-    />
+    <LoginPage title="login" />
   </main>
 </template>

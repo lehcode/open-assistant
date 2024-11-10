@@ -1,6 +1,6 @@
-import { LoginRequest, LoginResponse, User } from '@open-assistant/types';
+import { LoginRequest, LoginResponse, User } from '@lib/shared';
 import { Ref, ref } from 'vue';
-import { AuthService } from '@open-assistant/services';
+import { AuthService } from '../services/auth.service';
 
 const authService = new AuthService();
 

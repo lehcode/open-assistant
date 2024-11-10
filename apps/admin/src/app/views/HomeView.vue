@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import LoginPage from "../pages/LoginPage.vue";
-</script>
-
+<script setup lang="ts"></script>
 <template>
-  <main>
-    <LoginPage title="login" />
-  </main>
+  <h1>Welcome!</h1>
+  <p>This is a home page.</p>
 </template>
