@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import { User } from '@lib/shared';
+import { Injectable } from '@nestjs/common';
 
 // const bcrypt = require('bcrypt');
 // const saltRounds = 10;
@@ -38,7 +38,7 @@ class UserService {
    * @returns {Promise<User | undefined>} - A promise that resolves to the user object or undefined.
    */
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+    return this.users.find((user) => user.username.toLowerCase() === username.toLowerCase());
   }
 }
 
