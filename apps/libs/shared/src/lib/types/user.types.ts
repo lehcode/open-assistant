@@ -1,3 +1,5 @@
+import { ApiResponse } from "./base.types";
+
 export type User = {
   id: number;
   username: string;
@@ -8,4 +10,7 @@ export type User = {
 };
 
 
-export type AuthCredentials = Pick<User, 'username' | 'access_token'>
+type AuthCredentials = Pick<User, 'id' | 'username' | 'access_token'>
+
+
+export type UserLoginResponse = ApiResponse<AuthCredentials>

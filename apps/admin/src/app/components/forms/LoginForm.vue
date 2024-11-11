@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LoginRequest } from "@lib/shared";
+import { Lock, Mail } from "lucide-vue-next";
 import { reactive, ref } from "vue";
-import { Eye, EyeOff, LogIn, Lock, Mail } from "lucide-vue-next";
 
 
 const emit = defineEmits<{
@@ -18,7 +18,6 @@ const loginRequest = reactive<LoginRequest>({
  * Emits the "submit" event with the current login request data.
  */
 const handleSubmit = () => {
-  debugger;
   emit("submit", loginRequest);
 };
 </script>

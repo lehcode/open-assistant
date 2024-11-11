@@ -1,4 +1,10 @@
-export interface IBaseResponse {
+import { HttpStatus } from "@nestjs/common";
+
+export interface IApiBaseResponse {
   success: boolean;
-  error?: string;
+  statusCode: HttpStatus;
+}
+
+export interface IApiSuccessResponse extends IApiBaseResponse {
+  data: object;
 }

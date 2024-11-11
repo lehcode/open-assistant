@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import AppLayout from '../components/layout/AppLayout.vue';
+import AppLayout from './AppLayout.vue';
 
 describe('AppLayout', () => {
   it('renders properly', () => {

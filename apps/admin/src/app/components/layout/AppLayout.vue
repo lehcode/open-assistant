@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useUserStore } from "../../stores/user.store";
 import Sidebar from "./Sidebar.vue";
+
+const userStore = useUserStore();
 </script>
 
 <template>
   <div
-    v-if="isAuthenticated"
+    v-if="userStore.authenticated"
     class="min-h-screen bg-gray-100"
   >
     <Navbar />

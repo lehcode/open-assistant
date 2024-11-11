@@ -1,10 +1,11 @@
+import { IApiErrorResponse, LoginResponse, User, UserLoginResponse } from '@lib/shared';
+import { HttpStatus } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { LoginResponse, User } from '@lib/shared';
-import AuthService from './auth.service';
 import { Request } from 'express';
 import UserService from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
+import { AuthController } from './auth.controller';
+import AuthService from './auth.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -28,10 +29,14 @@ describe('AuthController', () => {
       username: 'testUser',
       password: 'testPassword',
     };
-    const expectedResponse: LoginResponse = {
+    const expectedResponse: UserLoginResponse = {
       success: true,
-      access_token: 'validToken',
-      username: 'testUser',
+      statusCode: 200,
+      data: {
+        id: 999,
+        username: 'testUser',
+        access_token: 'validToken'
+      }
     };
 
     jest.spyOn(AuthService.prototype, 'login').mockResolvedValue(expectedResponse);
@@ -48,9 +53,10 @@ describe('AuthController', () => {
       username: 'nonexistentUser',
       password: 'testPassword',
     };
-    const expectedResponse: LoginResponse = {
+    const expectedResponse: IApiErrorResponse = {
       success: false,
-      error: 'Invalid username or password',
+      statusCode: HttpStatus.UNAUTHORIZED,
+      error: "Invalid username or password"
     };
   
     jest.spyOn(AuthService.prototype, 'login').mockResolvedValue(expectedResponse);

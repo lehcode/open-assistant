@@ -1,10 +1,12 @@
 
 // import { Observable, of } from 'rxjs';
 // import { map, catchError } from 'rxjs/operators';
-import { BaseResponse, LoginRequest, LoginResponse } from '@lib/shared';
+import { ApiResponse, AuthCredentials, IApiErrorResponse, IAuthCredentials, LoginRequest } from '@lib/shared';
 
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/v1';
+  protected apiHost = import.meta.env.VITE_API_HOST || 'localhost';
+  protected apiPort = import.meta.env.VITE_API_PORT || 3000;
+  private apiUrl = `http://${this.apiHost}:${this.apiPort}/api/v1`;
 
   /**
    * Attempt to log in the user with the given credentials.
@@ -13,23 +15,28 @@ export class AuthService {
    * @returns A promise that resolves to the user data on success, or a
    *          "BaseResponse" object with an error message on failure.
    */
-  async login(credentials: LoginRequest): Promise<LoginResponse | BaseResponse> {
-    try {
-      const response = await fetch(`${this.apiUrl}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
+  async login(credentials: LoginRequest): Promise<ApiResponse<IAuthCredentials> | IApiErrorResponse> {
+    const response = await fetch(`${this.apiUrl}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    });
 
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      const result = await response.json();
-      return result;
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    if (!response.ok) {
+      return { 
+        success: false,
+        statusCode: response.status,
+        error: response.statusText
+      };
     }
+
+    const result = await response.json();
+
+    return {
+      success: true,
+      statusCode: response.status,
+      data: result as AuthCredentials
+    };
   }
 
 

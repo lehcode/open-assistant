@@ -1,22 +1,23 @@
-import { defineStore } from 'pinia';
 import type { AuthCredentials } from '@lib/shared';
+import { defineStore } from 'pinia';
 
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    authorized: <boolean>false,
+    authenticated: <boolean>false,
     credentials: <AuthCredentials>{
-      username: '',
-      access_token: '',
+      userId: 0,
+      userName: '',
+      accessToken: '',
     }
   }),
   actions: {
     /**
-     * Updates the authorized state in the store.
-     * @param value - boolean indicating if the user is authorized or not.
+     * Updates the authenticated state in the store.
+     * @param value - boolean indicating if the user is authenticated or not.
      */
-    updateAuthorized(value: boolean) {
-      this.authorized = value;
+    updateAuthenticated(value: boolean) {
+      this.authenticated = value;
     },
     /**
      * Updates the credentials in the store.

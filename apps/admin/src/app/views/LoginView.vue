@@ -1,26 +1,24 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import LoginForm from "../components/forms/LoginForm.vue";
+import { AuthCredentials, LoginRequest, LoginResponse } from "@lib/shared";
 import { useAuth } from "../composables/useAuth";
-import { LoginRequest } from "@lib/shared";
-import { useUserStore } from "../stores/user.store";
 
 
-const messageStore = useUserStore();
+// let validUser = ref(false);
 
-let validUser = ref(false);
+const emit = defineEmits<{
+  (e: 'login', loginResponse: LoginResponse<AuthCredentials>): void
+}>();
 
 const handleLogin = async (formData: LoginRequest) => {
   try {
     const result = await useAuth().provideLogin(formData);
-
-    debugger;
-
+    
     if (result.success) {
-      validUser.value = true;
-      messageStore.updateAuthorized(true);
+      emit("login", result);
+    //   validUser.value = true;
+    //   messageStore.updateAuthorized(true);
     } else {
-      messageStore.updateAuthorized(false);
+    //   messageStore.updateAuthorized(false);
     }
   } catch (error: any) {
     throw new Error("Login failed:", error.message);
