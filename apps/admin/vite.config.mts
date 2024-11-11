@@ -1,10 +1,10 @@
 /// <reference types='vitest' />
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
+import vue from "@vitejs/plugin-vue";
 import { resolve } from "node:path";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   root: "./",

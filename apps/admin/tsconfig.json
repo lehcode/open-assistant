@@ -3,7 +3,8 @@
     "jsx": "preserve",
     "jsxImportSource": "vue",
     "composite": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["node"]
   },
   "files": [],
   "include": [

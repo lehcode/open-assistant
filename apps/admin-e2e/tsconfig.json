@@ -12,5 +12,8 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "src/**/*.d.ts",
-    "eslint.config.mjs"  ]
+    "eslint.config.mjs",
+    "../admin/src/**/*.ts",
+    "../admin/src/**/*.vue",
+  ]
 }

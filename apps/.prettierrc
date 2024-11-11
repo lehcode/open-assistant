@@ -4,6 +4,7 @@
   "semi": true,
   "singleQuote": false,
   "printWidth": 120,
+  "proseWrap": "always",
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", ".mts"],
@@ -56,7 +57,9 @@
       "options": {
         "parser": "vue",
         "printWidth": 80,
-        "singleQuote": true
+        "singleQuote": true,
+        "vueIndentScriptAndStyle": true,
+        "singleAttributePerLine": true
       }
     }
   ]
