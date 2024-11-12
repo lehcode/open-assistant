@@ -17,7 +17,6 @@
         "main": "api/src/main.ts",
         "tsConfig": "api/tsconfig.app.json",
         "assets": ["api/src/assets"],
-        "isolatedConfig": true,
         "webpackConfig": "api/webpack.config.js"
       },
       "configurations": {
@@ -51,6 +50,7 @@
         "development": {
           "buildTarget": "api:build:development",
           "inspect": true,
+          "watch": true,
           "runtimeArgs": ["--inspect=0.0.0.0:9229"]
         },
         "production": {

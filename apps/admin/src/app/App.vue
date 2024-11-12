@@ -1,18 +1,29 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-</script>
-
 <template>
   <header>
     <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
+      <RouterLink to="/">
+        Home
+      </RouterLink>
+      <RouterLink to="/dashboard">
+        Your Work
+      </RouterLink>
+      <RouterLink to="/about">
+        About
+      </RouterLink>
     </nav>
   </header>
   <RouterView />
 </template>
 
 <style scoped lang="scss">
+.min-h-screen {
+  min-height: 100vh;
+}
+
+main {
+  padding-top: 5rem;
+}
+
 header {
   line-height: 1.5;
   max-width: 100vw;

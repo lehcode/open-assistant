@@ -6,6 +6,10 @@
 - UI: React, Vue
 - API: Nest
 
+### Icons
+
+https://lucide.dev/
+
 ## Architecture
 
 ### API

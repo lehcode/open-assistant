@@ -7,12 +7,12 @@ module.exports = composePlugins(withNx(), (config) => {
   config.output = {
     ...config.output,
     path: path.join(__dirname, '../dist/api'),
-  }
+  };
 
   // Update the webpack config as needed here.
   config.resolve.alias = {
     ...config.resolve.alias,
-    '@app-types': path.join(__dirname, '../libs/feature/types/src/index.ts')
+    '@lib/shared': path.join(__dirname, '../libs/shared/src/index.ts')
   };
 
   return {
@@ -36,5 +36,5 @@ module.exports = composePlugins(withNx(), (config) => {
         configType: "flat",
       }),
     ],
-  }
+  };
 });

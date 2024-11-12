@@ -29,7 +29,7 @@
           "configName": "tsconfig.lib.json"
         }
       },
-      "exclude": ["libs/shared/*", "libs/feature/*"]
+      "exclude": ["libs/**/*"]
     },
     {
       "plugin": "@nx/webpack/plugin",
@@ -69,6 +69,19 @@
         "targetName": "test"
       },
       "exclude": ["**/*-e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["libs/shared/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.lib.json"
+        }
+      }
     }
   ],
   "targetDefaults": {
@@ -97,6 +110,11 @@
       "options": {
         "main": "{projectRoot}/src/index.ts"
       }
+    },
+    "@nx/vite:build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "generators": {
@@ -136,6 +154,11 @@
         "useLockFile": false,
         "skipNxCache": true
       }
+    }
+  },
+  "release": {
+    "version": {
+      "preVersionCommand": "npx nx run-many -t build"
     }
   }
 }

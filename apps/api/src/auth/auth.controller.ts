@@ -1,51 +1,65 @@
-import { Controller, Get, Logger, Post, Request, Response, UseGuards } from '@nestjs/common';
-import type { Request as RequestType, Response as ResponseType } from 'express';
+import type { IAuthCredentials, LoginResponse, User } from '@lib/shared';
+import { Controller, Get, HttpException, HttpStatus, Logger, Post, Request, UseGuards } from '@nestjs/common';
+import type { Request as RequestType } from 'express';
 import AuthService from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import type { LoginResponse, User } from '@types';
 import { Public } from './decorators/public';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  /**
-   * Constructor.
-   *
-   * @param authService - The service for authentication.
-   */
   constructor(private readonly authService: AuthService) {}
-  
-  @Public()
+
   // @UseGuards(LocalAuthGuard)
+  @Public()
   @Post('login')
   /**
-   * Log in with the given user.
+   * Authenticates a user.
    *
-   * The function will make a POST request to the login endpoint with the given
-   * user. If the login is successful, the function will return a login response
-   * with the user's token and username. If the login fails, the function will
-   * return a login response with an error message.
+   * @remarks
+   * This route is marked with the {@link Public} decorator, meaning that
+   * it does not require authentication. When a user sends a request to this
+   * route with a valid username and password, the route will return an
+   * {@link AuthCredentials} object containing the user's id, username, and a
+   * JSON Web Token that can be used to authenticate the user for subsequent
+   * requests. If the user's credentials are invalid, the route will throw a
+   * 403 Forbidden HTTP exception.
    *
-   * @param {Request} req - The request with the user to log in with.
-   * @returns {Promise<LoginResponse>} - A promise with the login response.
+   * @param req - The Express request object.
+   * @returns An `AuthCredentials` object or a 403 Forbidden HTTP exception.
    */
-  async login(@Request() req: RequestType): Promise<LoginResponse> {
+  async login(@Request() req: RequestType): Promise<LoginResponse<IAuthCredentials>> {
     if (process.env.NODE_ENV !== 'production') {
       Logger.log(`${req.method}: ${req.originalUrl}`);
       Logger.log(JSON.stringify(req.body));
     }
-      
-    return this.authService.login(req.body as User)
+
+    const validUser = await this.authService.validateUser(
+      req.body.username,
+      req.body.password
+    );
+
+    if (!validUser) {
+      throw new HttpException('Invalid username or password', HttpStatus.FORBIDDEN);
+    }
+
+    const loginCredentials = await this.authService.login({ ...validUser});
+    
+    return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      data: loginCredentials
+    } as LoginResponse<IAuthCredentials>;
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Request() req: RequestType, @Response() res: ResponseType): Promise<void> {
-    return req.logout({keepSessionInfo: true}, (err) => {
+  async logout(@Request() req: RequestType): Promise<any> {
+    return req.logout({ keepSessionInfo: true }, (err) => {
       if (err) {
         if (process.env.NODE_ENV !== 'production') {
           Logger.error(err);
         }
-        
+
         return {
           success: false,
           message: 'Not authorized',
@@ -61,6 +75,17 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  /**
+   * Retrieves the profile of the authenticated user.
+   *
+   * This function is protected by JwtAuthGuard, ensuring that only authenticated
+   * users can access it. It returns the user object associated with the current request.
+   *
+   * @param {RequestType} req - The Express request object, which contains the user
+   *                            information after successful authentication.
+   * @returns {User} The UserTypes.User object representing the authenticated user's profile.
+   *                 This object is extracted from the request's user property.
+   */
   getProfile(@Request() req: RequestType): User {
     return req.user as User;
   }

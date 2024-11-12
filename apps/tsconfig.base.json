@@ -5,7 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "declarationMap": false,
     "declaration": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -13,9 +13,10 @@
     "importHelpers": true,
     "incremental": true,
     "isolatedModules": true,
-    "lib": ["es2022"],
+    "lib": ["ES2022", "dom"],
     "module": "ES2022",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
+    "target": "ES2022",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -25,15 +26,14 @@
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "strict": true,
-    "target": "es2022",
     "verbatimModuleSyntax": false,
     "rootDir": ".",
+    "outDir": "dist/out-tsc",
     "paths": {
-      "@interfaces": ["libs/feature/interfaces/src/index.ts"],
-      "@types": ["libs/feature/types/src/index.ts"]
+      "@lib/shared": ["libs/shared/src/index.ts"]
     }
   },
-  "exclude": ["node_modules/**", "tmp/**"]
+  "exclude": ["tmp/**"]
 }
