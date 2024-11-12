@@ -1,6 +1,11 @@
-import { IEnvironment } from './environment';
 
-export const environment: IEnvironment = {
+import { IDevEnvironment } from "./environment";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface,@typescript-eslint/no-empty-object-type
+interface IProdEnvironment extends IDevEnvironment {}
+type ProdEnvironment = IProdEnvironment
+
+const environment: ProdEnvironment = {
   production: true,
   port: 3000,
   apiUrl: 'http://localhost:3000',
@@ -22,3 +27,5 @@ export const environment: IEnvironment = {
     saltRounds: 10
   }
 };
+
+export default environment;

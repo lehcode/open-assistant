@@ -1,5 +1,5 @@
 // This file should not be modified directly - use specific environment files instead
-export interface IEnvironment {
+export interface IDevEnvironment {
   production: boolean;
   port: number;
   apiUrl: string;
@@ -18,7 +18,7 @@ export interface IEnvironment {
   }
 }
 
-export const environment: IEnvironment = {
+const environment: IDevEnvironment = {
   production: false,
   port: 3000,
   apiUrl: 'http://localhost:3000',
@@ -40,3 +40,5 @@ export const environment: IEnvironment = {
     saltRounds: 10
   }
 };
+
+export default environment;

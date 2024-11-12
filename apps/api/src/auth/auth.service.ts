@@ -1,4 +1,4 @@
-import { AuthCredentials, User } from '@lib/shared';
+import { AuthCredentials, SafeUser, User } from '@lib/shared';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import UserService from '../user/user.service';
@@ -25,12 +25,10 @@ class AuthService {
    */
   async validateUser(username: string, pass: string): Promise<{ id: number; username: string } | null> {
     const user = (await this.userService.findOne(username)) as User;
-
-    if (user && user.password === pass) {
+    if (user && await this.userService.validatePassword(user, pass)) {
       const { id, username } = user;
       return { id, username };
     }
-
     return null;
   }
 
@@ -44,7 +42,7 @@ class AuthService {
    * @param {User} user - The user object to log in.
    * @returns {Promise<AuthCredentials>} - A promise that resolves to an AuthCredentials object.
    */
-  async login(user: Omit<User, 'salt'>): Promise<AuthCredentials> {
+  async login(user: SafeUser): Promise<AuthCredentials> {
     const access_token = await this.jwtService.signAsync({
       username: user.username,
       sub: user.id,

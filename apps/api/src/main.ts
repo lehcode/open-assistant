@@ -5,9 +5,13 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import session from 'express-session';
 import { AppModule } from './app/app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import devEnv from "./environments/environment";
+import prodEnv from "./environments/environment.production";
+
+const env = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ? prodEnv : devEnv;
 
 async function bootstrap() {
   const port = process.env.PORT || 3000;
@@ -17,7 +21,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
       cors: {
         origin:
-          process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? true : `http://${host}:${port}`,
+          process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? true : env.corsOrigins,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,
       },

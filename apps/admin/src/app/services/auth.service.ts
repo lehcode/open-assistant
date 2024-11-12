@@ -2,6 +2,10 @@
 // import { Observable, of } from 'rxjs';
 // import { map, catchError } from 'rxjs/operators';
 import { ApiResponse, AuthCredentials, IApiErrorResponse, IAuthCredentials, LoginRequest } from '@lib/shared';
+import pinia from "../stores/base.store";
+import { useUserStore } from "../stores/user.store";
+
+const userStore = useUserStore(pinia);
 
 export class AuthService {
   protected apiHost = import.meta.env.VITE_API_HOST || 'localhost';
@@ -51,15 +55,8 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
+    return !!(localStorage.getItem('authToken') && localStorage.getItem('authUsername') && userStore.authenticated);
   }
-
-  storeUserToken(username: string, token: string): void {
-    localStorage.setItem('username', username);
-    localStorage.setItem('authToken', token);
-  }
-
-
 }
 
 export default AuthService;

@@ -1,4 +1,4 @@
-import type { AuthCredentials, User } from '@lib/shared';
+import type { IAuthCredentials, LoginResponse, User } from '@lib/shared';
 import { Controller, Get, HttpException, HttpStatus, Logger, Post, Request, UseGuards } from '@nestjs/common';
 import type { Request as RequestType } from 'express';
 import AuthService from './auth.service';
@@ -27,13 +27,11 @@ export class AuthController {
    * @param req - The Express request object.
    * @returns An `AuthCredentials` object or a 403 Forbidden HTTP exception.
    */
-  async login(@Request() req: RequestType): Promise<AuthCredentials | HttpException> {
+  async login(@Request() req: RequestType): Promise<LoginResponse<IAuthCredentials>> {
     if (process.env.NODE_ENV !== 'production') {
       Logger.log(`${req.method}: ${req.originalUrl}`);
       Logger.log(JSON.stringify(req.body));
     }
-
-    debugger;
 
     const validUser = await this.authService.validateUser(
       req.body.username,
@@ -44,7 +42,13 @@ export class AuthController {
       throw new HttpException('Invalid username or password', HttpStatus.FORBIDDEN);
     }
 
-    return this.authService.login({ ...validUser, password:req.body.password});
+    const loginCredentials = await this.authService.login({ ...validUser});
+    
+    return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      data: loginCredentials
+    } as LoginResponse<IAuthCredentials>;
   }
 
   @UseGuards(JwtAuthGuard)

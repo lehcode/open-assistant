@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <p>Welcome to AddConfigPage!</p>
+  <p>Welcome to AppConfigPage!</p>
 </template>
 
 <style scoped></style>

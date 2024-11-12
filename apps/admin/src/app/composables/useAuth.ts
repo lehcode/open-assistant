@@ -1,65 +1,38 @@
-import { IApiErrorResponse, IAuthCredentials, LoginRequest, LoginResponse, User } from '@lib/shared';
+import { IApiErrorResponse, IAuthCredentials, LoginRequest, LoginResponse, SafeUser, User } from '@lib/shared';
 import { HttpStatus } from '@nestjs/common';
-// import { createPinia } from 'pinia';
 import { Ref, ref } from 'vue';
 import { AuthService } from '../services/auth.service';
 import { useUserStore } from '../stores/user.store';
 
 
 const authService = new AuthService();
-const userStore = useUserStore();
 
-debugger;
-
-const user = ref<User>({
+const user = ref<SafeUser>({
   id: 0,
   username: '',
 });
-const isAuthenticated = userStore.authenticated;
 
 const provideLogin = async (
   formData: LoginRequest
-): Promise<LoginResponse<LoginResponse<IAuthCredentials> | IApiErrorResponse>> => {
-  let user_id = 0;
-  let username = '';
-  let access_token = '';
-
+): Promise<LoginResponse<IAuthCredentials> | IApiErrorResponse | undefined> => {
   try {
-    const response = await authService.login(formData);
+    const response = (await authService.login(formData)).data;
 
-    if ('access_token' in response && 'username' in response && 'id' in response) {
-      const successResponse = response;
-      user_id = successResponse.id as number;
-      access_token = successResponse.access_token as string;
-      username = successResponse.username as string;
+    console.log(response);
 
-      const userData = {
-        userId: user_id,
-        userName: username,
-        accessToken: String(access_token),
-      };
-
-      userStore.updateAuthenticated(true);
-      userStore.updateCredentials(userData);
-
+    if (response.success) {
       return {
-        success: true,
+        success: response.success,
         statusCode: response.statusCode,
-        data: userData
+        data: { ...response.data },
       } as LoginResponse<IAuthCredentials>;
-    } else if ('error' in response) {
+    } else {
       return {
-        success: false,
+        success: response.success,
         statusCode: response.statusCode,
-        error: response.error,
+        error: 'Invalid response',
       };
     }
-
-    return {
-      success: false,
-      statusCode: HttpStatus.FORBIDDEN,
-      error: 'Invalid response',
-    };
   } catch (error: Error | unknown) {
     return {
       success: false,
@@ -75,13 +48,13 @@ const provideLogout = () => {
 };
 
 const useAuth = (): {
-  user: Ref<User>;
+  user: Ref<Omit<User, 'password' | 'salt'>>;
   isAuthenticated: boolean;
   provideLogin: typeof provideLogin;
 } => {
   return {
     user,
-    isAuthenticated,
+    isAuthenticated: useUserStore().authenticated,
     provideLogin,
   };
 };

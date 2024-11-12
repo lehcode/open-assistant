@@ -13,13 +13,6 @@ const loginRequest = reactive<LoginRequest>({
   password: "",
   rememberMe: false
 });
-
-/**
- * Emits the "submit" event with the current login request data.
- */
-const handleSubmit = () => {
-  emit("submit", loginRequest);
-};
 </script>
 
 <template>
@@ -36,7 +29,7 @@ const handleSubmit = () => {
 
       <form
         class="mt-8 space-y-6"
-        @submit.prevent="handleSubmit"
+        @submit.prevent="emit('submit', loginRequest)"
       >
         <div className="space-y-4">
           <div>
