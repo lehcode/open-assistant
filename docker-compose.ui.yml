@@ -10,7 +10,7 @@ services:
         - uid=${HOST_UID}
         - user=${HOST_USER}
         - gid=${HOST_GID}
-        - debug=${DOCKER_DEBUG:-no}
+        - debug=${DOCKER_DEBUG:-}
         - yarn_version=${YARN_VERSION:-1.22.22}
     # deploy:
     #   replicas: 2
