@@ -3,7 +3,7 @@ import LoginPage from 'admin/src/app/pages/LoginPage.vue';
 </script>
 
 <template>
-  <main className="min-h-screen bg-gray-100">
+  <main>
     <LoginPage title="login" />
   </main>
 </template>
