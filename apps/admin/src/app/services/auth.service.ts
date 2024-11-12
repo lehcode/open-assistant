@@ -1,16 +1,27 @@
 
-// import { Observable, of } from 'rxjs';
-// import { map, catchError } from 'rxjs/operators';
-import { ApiResponse, AuthCredentials, IApiErrorResponse, IAuthCredentials, LoginRequest } from '@lib/shared';
+import { ApiResponse, IApiErrorResponse, IAuthCredentials, LoginRequest } from '@lib/shared';
+import { ConfigService } from '@nestjs/config';
 import pinia from "../stores/base.store";
 import { useUserStore } from "../stores/user.store";
 
 const userStore = useUserStore(pinia);
 
 export class AuthService {
-  protected apiHost = import.meta.env.VITE_API_HOST || 'localhost';
-  protected apiPort = import.meta.env.VITE_API_PORT || 3000;
-  private apiUrl = `http://${this.apiHost}:${this.apiPort}/api/v1`;
+  private readonly apiHost: string;
+  private readonly apiPort: number;
+  public readonly apiUrl: string;
+
+  constructor(private readonly configService: ConfigService) {
+    this.apiHost = this.configService.get('http.host', '0.0.0.0');
+    this.apiPort = this.configService.get('http.port', 3000);
+    this.apiUrl = `http://${this.apiHost}:${this.apiPort}/api/v1`;
+
+    if (this.configService.get('http.ssl', true)) {
+      this.apiHost = this.configService.get('http.host', 'localhost');
+      this.apiPort = this.configService.get('http.port', 443);
+      this.apiUrl = `https://${this.apiHost}:${this.apiPort}/api/v1`;
+    }
+  }
 
   /**
    * Attempt to log in the user with the given credentials.
@@ -39,7 +50,7 @@ export class AuthService {
     return {
       success: true,
       statusCode: response.status,
-      data: result as AuthCredentials
+      data: result
     };
   }
 
