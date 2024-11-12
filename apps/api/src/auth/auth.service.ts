@@ -44,7 +44,7 @@ class AuthService {
    * @param {User} user - The user object to log in.
    * @returns {Promise<AuthCredentials>} - A promise that resolves to an AuthCredentials object.
    */
-  async login(user: User): Promise<AuthCredentials> {
+  async login(user: Omit<User, 'salt'>): Promise<AuthCredentials> {
     const access_token = await this.jwtService.signAsync({
       username: user.username,
       sub: user.id,

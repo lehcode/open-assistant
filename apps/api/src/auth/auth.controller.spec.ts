@@ -40,6 +40,7 @@ describe('AuthController', () => {
       id: 999,
       username: 'testUser',
       password: 'testPassword',
+      salt: 'testSalt'
     };
     const expectedResponse: IAuthCredentials = {
       userId: 999,
@@ -61,6 +62,7 @@ describe('AuthController', () => {
       id: 999,
       username: 'nonexistentUser',
       password: 'testPassword',
+      salt: 'testSalt'
     };
     
     jest.spyOn(authService, 'validateUser').mockResolvedValue(null);
@@ -87,6 +89,7 @@ describe('AuthController', () => {
       id: 999,
       username: 'testUser',
       password: 'testPassword',
+      salt: 'testSalt'
     };
     const expectedError = new Error('Invalid username or password');
   

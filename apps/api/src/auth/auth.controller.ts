@@ -44,7 +44,7 @@ export class AuthController {
       throw new HttpException('Invalid username or password', HttpStatus.FORBIDDEN);
     }
 
-    return this.authService.login(validUser);
+    return this.authService.login({ ...validUser, password:req.body.password});
   }
 
   @UseGuards(JwtAuthGuard)

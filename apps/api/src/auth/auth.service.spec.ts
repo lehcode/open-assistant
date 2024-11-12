@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import AuthService from './auth.service';
-import { UserModule } from '../user/user.module';
-import { AuthModule } from '../auth/auth.module';
-import UserService from '../user/user.service';
 import { User } from '@lib/shared';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthModule } from '../auth/auth.module';
+import { UserModule } from '../user/user.module';
+import UserService from '../user/user.service';
+import AuthService from './auth.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -13,6 +13,7 @@ describe('AuthService', () => {
     id: 999,
     username: 'testUser',
     password: 'testPassword',
+    salt: 'testSalt'
   };
 
   beforeEach(async () => {
@@ -33,7 +34,8 @@ describe('AuthService', () => {
     const userMock: User = {
       username: 'nonexistingUser@gmail.com',
       password: 'testPassword',
-      id: 0
+      id: 0,
+      salt: 'testSalt'
     };
 
     jest.spyOn(userService, 'findOne').mockResolvedValue(userMock);
@@ -51,6 +53,7 @@ describe('AuthService', () => {
       id: 999,
       username: 'testUser',
       password: 'testPassword',
+      salt: 'testSalt'
     };
 
     jest.spyOn(userService, 'findOne').mockResolvedValue(userMock);

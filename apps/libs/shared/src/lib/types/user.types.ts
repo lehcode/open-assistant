@@ -3,9 +3,9 @@ import { ApiResponse } from "./base.types";
 export type User = {
   id: number;
   username: string;
-  password?: string;
+  password: string;
   // The salt used to generate the password hash
-  salt?: string;
+  salt: string;
   access_token?: string;
 };
 
