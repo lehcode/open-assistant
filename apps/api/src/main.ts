@@ -4,6 +4,7 @@
  */
 
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import session from 'express-session';
@@ -12,21 +13,38 @@ import devEnv from "./environments/environment";
 import prodEnv from "./environments/environment.production";
 
 const env = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ? prodEnv : devEnv;
-
-async function bootstrap() {
-  const port = process.env.PORT || 3000;
-  const host = process.env.HOST || 'localhost';
-
+const appModuleConfig = {
+  cors: {
+    origin:
+      process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? true : env.corsOrigins,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  },
+};
+const globalPrefix = 'api/v1';
+const swaggerConfig = new DocumentBuilder()
+    .setTitle('Open Assistant API')
+    .setDescription('Description')
+    .setVersion('1.0')
+    .addTag('api')
+    .build();
+    
+/**
+ * Bootstraps the NestJS application.
+ *
+ * This function will create a NestJS application with the AppModule and the
+ * given configuration. It will also set up the Swagger documentation and
+ * configure the session middleware.
+ *
+ * The function will handle the SIGTERM signal and will close the application
+ * gracefully when it receives this signal.
+ *
+ * @returns {Promise<void>} A promise that resolves when the application has
+ * been started or rejects if an error occurs.
+ */
+async function bootstrap(): Promise<void> {
   try {
-    const app = await NestFactory.create(AppModule, {
-      cors: {
-        origin:
-          process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? true : env.corsOrigins,
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true,
-      },
-    });
-    const globalPrefix = 'api/v1';
+    const app = await NestFactory.create(AppModule, appModuleConfig);
     app.setGlobalPrefix(globalPrefix);
 
     // Handle shutdown gracefully
@@ -43,15 +61,13 @@ async function bootstrap() {
       })
     );
 
-    const config = new DocumentBuilder()
-      .setTitle('Open Assistant')
-      .setDescription('API description')
-      .setVersion('1.0')
-      .addTag('api')
-      .build();
-
-    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('api', app, documentFactory);
+
+    const configService = app.get(ConfigService);
+    
+    const port = configService.get('http.port') || 80;
+    const host = configService.get('http.host') || 'localhost';
 
     await app.listen(port);
 
