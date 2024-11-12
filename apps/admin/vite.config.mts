@@ -39,6 +39,13 @@ export default defineConfig({
     coverage: {
       reportsDirectory: "../coverage/admin",
       provider: "v8"
+    },
+    deps: {
+      optimizer: {
+        web: {
+          include: ['vue', 'vue-router']
+        }
+      }
     }
   },
   resolve: {
