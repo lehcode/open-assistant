@@ -66,7 +66,7 @@ async function bootstrap(): Promise<void> {
 
     const configService = app.get(ConfigService);
     
-    const port = configService.get('http.port') || 80;
+    const port = configService.get('http.port') || 4443;
     const host = configService.get('http.host') || 'localhost';
 
     await app.listen(port);
