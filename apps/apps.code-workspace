@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "apps"
+		},
+		{
+			"path": "doc"
+		}
+	],
+	"settings": {
+		"DockerRun.DisableDockerrc": true,
+		"DockerRun.DisableAutoGenerateConfig": true,
+		"typescript.enablePromptUseWorkspaceTsdk": true,
+		"typescript.format.enable": false,
+		"eslint.debug": true,
+		"bookmarks.useWorkaroundForFormatters": true,
+		"codeium.disableSupercomplete": false,
+		"typescript.preferences.organizeImports": {},
+		"atlascode.jira.todoIssues.triggers": [
+			"TODO:",
+			"BUG:",
+			"FIXME:",
+			"ISSUE:",
+			"TECH DEBT:",
+			"TASK:"
+		],
+		"codeium.detectProxy": false,
+		"gitlens.ai.experimental.generateCommitMessage.enabled": true,
+		"workbench.settings.openDefaultKeybindings": true
+	}
+}

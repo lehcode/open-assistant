@@ -1,0 +1,24 @@
+@startuml
+
+[Gmail Controller] as GMC
+[Devmail Controller] as DMC
+
+[Emails Module] --> GMC
+[Emails Module] --> DMC
+
+GMC --> [MailAuthService]
+GMC --> [MailManageService]
+GMC --> [AIService]
+
+DMC --> [MailAuthService]
+DMC --> [MailManageService]
+DMC --> [AIService]
+
+note right of DMC
+  The DeveloperMail API allows simple programmatic
+  access of mailbox functionality.
+  https://github.com/faruqsandi/devmail
+  https://www.developermail.com/api/v1/
+end note
+
+@enduml

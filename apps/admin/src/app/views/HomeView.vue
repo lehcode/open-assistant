@@ -1,0 +1,5 @@
+<script setup lang="ts"></script>
+<template>
+  <h1>Welcome!</h1>
+  <p>This is a home page.</p>
+</template>

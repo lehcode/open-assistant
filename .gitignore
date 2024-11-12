@@ -143,9 +143,18 @@ thumb
 sketch
 
 
-.nx/installation
-.nx/cache
-.nx/workspace-data
-.idea/
+**/.nx/installation
+**/.nx/cache
+**/.nx/workspace-data
 
-.vscode/
+# IDEs
+**/.idea/
+**/.vscode/
+
+# Supabase
+**supabase/config.toml
+**/supabase/.temp/
+**/supabase/volumes/
+**/.env.local
+**/.env.*.local
+

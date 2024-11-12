@@ -2,17 +2,17 @@
   "extends": "../tsconfig.base.json",
   "baseUrl": ".",
   "files": [],
-  "include": [],
+  "include": [
+    "src/**/*.ts",
+    "../libs/**/src/index.ts"
+  ],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    { "path": "../libs/shared/tsconfig.lib.json" },
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "sourceMap": true
-  }
+  },
+  "webpackConfig": "./webpack.config.js"
 }

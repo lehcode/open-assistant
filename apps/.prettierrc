@@ -1,33 +1,66 @@
 {
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "tabWidth": 2,
   "semi": true,
-  "singleQuote": true,
+  "singleQuote": false,
+  "printWidth": 120,
+  "proseWrap": "always",
   "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", ".mts"],
+      "options": {
+        "singleQuote": true,
+        "semi": true,
+        "trailingComma": "es5",
+        "arrowParens": "always"
+      }
+    },
+    {
+      "files": ["*.js", "*.mjs"],
+      "options": {
+        "singleQuote": false,
+        "semi": true,
+        "trailingComma": "es5",
+        "arrowParens": "always"
+      }
+    },
     {
       "files": ["*.html"],
       "options": {
         "tabWidth": 4,
-        "singleQuote": false
+        "htmlWhitespaceSensitivity": "css"
       }
     },
     {
       "files": ["*.json"],
       "options": {
-        "singleQuote": false,
-        "trailingComma": "none"
+        "printWidth": 80,
+        "tabWidth": 2
       }
     },
     {
       "files": ["*.yml", "*.yaml"],
       "options": {
-        "singleQuote": false,
-        "trailingComma": "none"
+        "printWidth": 80
       }
     },
     {
-      "files": ".prettierrc",
-      "options": { "parser": "json" }
+      "files": [".prettierrc"],
+      "options": {
+        "parser": "json",
+        "printWidth": 80,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": [".vue"],
+      "options": {
+        "parser": "vue",
+        "printWidth": 80,
+        "singleQuote": true,
+        "vueIndentScriptAndStyle": true,
+        "singleAttributePerLine": true
+      }
     }
   ]
 }
