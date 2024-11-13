@@ -91,7 +91,7 @@ jobs:
         run: yarn nx run api:test --parallel=true --coverage
 
       - name: Run UI Tests
-        run: yarn nx run admin:test --parallel=true
+        run: yarn nx run admin:test --parallel=true 
       
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
