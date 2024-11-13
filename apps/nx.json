@@ -16,7 +16,6 @@
     "development": ["default", "{projectRoot}/src/**/*"],
     "sharedGlobals": ["{workspaceRoot}/.gitlab-ci.yml"]
   },
-  "// nxCloudId": "6711eb262aab007f25b00114",
   "plugins": [
     {
       "plugin": "@nx/js/typescript",

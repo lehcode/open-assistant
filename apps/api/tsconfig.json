@@ -2,18 +2,15 @@
   "extends": "../tsconfig.base.json",
   "baseUrl": ".",
   "files": [],
-  "include": [
-    "src/**/*.ts",
-    "../libs/**/src/index.ts",
-    "src/config/*.yml"
-  ],
+  "include": ["src/**/*.ts", "../libs/**/src/index.ts", "src/config/*.yml"],
+  "exclude": ["eslint.config.js", "jest.config.ts", "webpack.config.js"],
   "references": [
     { "path": "../libs/shared/tsconfig.lib.json" },
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.spec.json" }
   ],
   "compilerOptions": {
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "webpackConfig": "./webpack.config.js"
 }
