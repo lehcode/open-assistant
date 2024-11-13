@@ -12,6 +12,7 @@ env:
   NX_SKIP_NX_CACHE: true # Skip Nx cache during CI
   NX_BRANCH: ${GITHUB_HEAD_REF:-$GITHUB_REF#refs/heads/}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  ESLINT_USE_FLAT_CONFIG: true
 
 defaults:
   run:
