@@ -48,24 +48,6 @@
       "defaultConfiguration": "production",
       "testFiles": ["src/**/*.{ts}"],
       "outputs": ["{options.outputFile}"],
-      "configurations":{
-        "production": {
-          "testTarget": "admin:test:production",
-          "testFiles": ["src/**/*.{test,spec}.{ts}"],
-          "globals": true,
-          "environment": "jsdom",
-          "passWithNoTests": true,
-          "env": {
-            "NODE_ENV": "production"
-          }
-        }
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "defaultConfiguration": "production",
-      "testFiles": ["src/**/*.{ts}"],
-      "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
           "admin/**/*.{ts}"
