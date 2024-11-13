@@ -23,18 +23,18 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "inspect": false
+          "inspect": false,
+          "env": {
+            "NODE_ENV": "development"
+          }
         },
         "production": {
           "optimization": true,
           "extractLicenses": true,
           "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "api/src/environments/environment.ts",
-              "with": "api/src/environments/environment.production.ts"
-            }
-          ]
+          "env": {
+            "NODE_ENV": "production"
+          }
         }
       }
     },
@@ -51,11 +51,17 @@
           "buildTarget": "api:build:development",
           "inspect": true,
           "watch": true,
-          "runtimeArgs": ["--inspect=0.0.0.0:9229"]
+          "runtimeArgs": ["--inspect=0.0.0.0:9229"],
+          "env": {
+            "NODE_ENV": "development"
+          }
         },
         "production": {
           "buildTarget": "api:build:production",
-          "inspect": false
+          "inspect": false,
+          "env": {
+            "NODE_ENV": "production"
+          }
         }
       }
     },
@@ -66,6 +72,26 @@
         "lintFilePatterns": ["api/**/*.ts", "api/**/*.tsx"],
         "eslintConfig": "eslint.config.mjs",
         "verbose": true
+      },
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      },
+      "env": {
+        "NODE_ENV": "testing"
       }
     }
   }

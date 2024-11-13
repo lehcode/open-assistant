@@ -4,7 +4,8 @@
   "files": [],
   "include": [
     "src/**/*.ts",
-    "../libs/**/src/index.ts"
+    "../libs/**/src/index.ts",
+    "src/config/*.yml"
   ],
   "references": [
     { "path": "../libs/shared/tsconfig.lib.json" },

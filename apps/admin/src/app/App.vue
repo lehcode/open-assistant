@@ -1,18 +1,14 @@
+<script setup lang="ts">
+import Header from './components/layout/Header.vue';
+</script>
+
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">
-        Home
-      </RouterLink>
-      <RouterLink to="/dashboard">
-        Your Work
-      </RouterLink>
-      <RouterLink to="/about">
-        About
-      </RouterLink>
-    </nav>
-  </header>
-  <RouterView />
+  <div class="min-h-screen bg-gray-50">
+    <Header />
+    <main>
+      <RouterView></RouterView>
+    </main>
+  </div>
 </template>
 
 <style scoped lang="scss">
