@@ -13,7 +13,7 @@ module.exports = [
   // ...nxPlugin.default.configs['flat/react-jsx'],
   // ...nxPlugin.default.configs['flat/react-typescript'],
   {
-    ignores: ["**/dist", "**/node_modules", "**/vite*"]
+    ignores: ["**/dist", "**/node_modules", "**/vite*"],
   },
   {
     languageOptions: {
@@ -21,23 +21,23 @@ module.exports = [
       globals: {
         ...globals.node,
         ...globals.jest,
-        ...globals.vitest
-      }
+        ...globals.vitest,
+      },
     },
     rules: {
       "@typescript-eslint/explicit-module-boundary-types": "off",
       semi: ["error", "always"], // Require semicolons
       "no-unused-vars": "warn", // Warn on unused variables
       "no-undef": "warn", // Warn on undefined variables
-      "no-debugger": "warn" // Warn on debugger statements
-    }
+      "no-debugger": "warn", // Warn on debugger statements
+    },
   },
   {
     files: ["*.json"],
     languageOptions: {
-      parser: jsoncParser
+      parser: jsoncParser,
     },
-    rules: {}
+    rules: {},
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
@@ -50,19 +50,19 @@ module.exports = [
           depConstraints: [
             {
               sourceTag: "*",
-              onlyDependOnLibsWithTags: ["*"]
-            }
-          ]
-        }
-      ]
-    }
+              onlyDependOnLibsWithTags: ["*"],
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
     // Override or add rules here
     rules: {
       "@typescript-eslint/no-unused-vars": ["off"],
-      "@typescript-eslint/no-explicit-any": "warn"
-    }
-  }
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
 ];

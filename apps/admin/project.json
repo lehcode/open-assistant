@@ -49,11 +49,9 @@
       "testFiles": ["src/**/*.{ts}"],
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "admin/**/*.{ts}"
-        ]
+        "lintFilePatterns": ["admin/**/*.{ts}"]
       },
-      "configurations":{
+      "configurations": {
         "production": {
           "testTarget": "admin:test:production",
           "testFiles": ["src/**/*.{test,spec}.{ts}"],
