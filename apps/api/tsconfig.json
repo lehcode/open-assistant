@@ -5,7 +5,7 @@
   "include": [
     "src/**/*.ts",
     "../libs/**/src/index.ts",
-    "src/app/config/*.yaml"
+    "src/config/*.yml"
   ],
   "references": [
     { "path": "../libs/shared/tsconfig.lib.json" },

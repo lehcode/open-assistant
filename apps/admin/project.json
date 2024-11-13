@@ -4,5 +4,44 @@
   "projectType": "application",
   "sourceRoot": "admin/src",
   "// targets": "to see all targets run: nx show project admin --web",
-  "targets": {}
+  "targets": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "defaultConfiguration": "testing",
+      "configurations": {
+        "testing": {
+          "testTarget": "admin:test",
+          "watch": true,
+          "runtimeArgs": ["--inspect=0.0.0.0:9229"],
+          "testFiles": ["src/**/*.{test,spec}.{ts,tsx}"],
+          "globals": true,
+          "environment": "jsdom",
+          "passWithNoTests": true,
+          "env": {
+            "NODE_ENV": "development"
+          }
+        },
+        "staging": {
+          "testTarget": "admin:test:staging",
+          "testFiles": ["src/**/*.{test,spec}.{ts,tsx}"],
+          "globals": true,
+          "environment": "jsdom",
+          "passWithNoTests": true,
+          "env": {
+            "NODE_ENV": "staging"
+          }
+        },
+        "production": {
+          "testTarget": "admin:test:production",
+          "testFiles": ["src/**/*.{test,spec}.{ts,tsx}"],
+          "globals": true,
+          "environment": "jsdom",
+          "passWithNoTests": true,
+          "env": {
+            "NODE_ENV": "production"
+          }
+        }
+      }
+    }
+  }
 }

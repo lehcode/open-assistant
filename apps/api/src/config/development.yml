@@ -1,0 +1,8 @@
+http:
+  port: 2998
+  host: "0.0.0.0"
+  ssl: false
+
+auth:
+  jwt:
+    secret: "secretJWT$ecret"
