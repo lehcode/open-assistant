@@ -52,6 +52,8 @@ class AuthService {
       userId: user.id,
       userName: user.username,
       accessToken: access_token,
+      // @ts-expect-error ts(2349)
+      refreshToken: refresh_token, // eslint-disable-line no-undef
     };
   }
 }

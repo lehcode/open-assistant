@@ -1,4 +1,5 @@
 import { User } from '@lib/shared';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
@@ -18,7 +19,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      providers: [AuthService, ConfigService, UserService],
       imports: [UserModule, AuthModule],
     }).compile();
 
@@ -66,11 +67,12 @@ describe('AuthService', () => {
   it('should return user object when the username and password are correct', async () => {
     const username = 'testUser';
     const password = 'testPassword';
-
+  
     jest.spyOn(userService, 'findOne').mockResolvedValue(userMock as User);
-
+    jest.spyOn(userService, 'validatePassword').mockResolvedValue(true);
+  
     const result = await authService.validateUser(username, password);
-
+  
     expect(result).toEqual({ id: userMock.id, username: userMock.username });
   });
 });
