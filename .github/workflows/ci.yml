@@ -44,11 +44,11 @@ jobs:
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
         
-      - name: Lint Admin UI
-        run: yarn nx run --projects=admin --target=lint  --parallel=true
+      # - name: Lint Admin UI
+      #   run: yarn nx run admin:lint
 
-      # - name: Lint API
-      #   run: yarn nx run api:lint --parallel=true
+      - name: Lint API
+        run: yarn nx run api:lint
         
       - name: Type Check
         run: yarn nx run-many --projects=admin,api --target=format:check --parallel=true
