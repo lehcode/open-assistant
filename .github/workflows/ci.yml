@@ -45,7 +45,7 @@ jobs:
           yarn install --frozen-lockfile --prefer-offline
         
       - name: Lint Admin UI
-        run: yarn nx run admin:lint --parallel=true
+        run: yarn nx run --projects=admin --target=lint
 
       # - name: Lint API
       #   run: yarn nx run api:lint --parallel=true
