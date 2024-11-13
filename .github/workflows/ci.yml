@@ -45,10 +45,10 @@ jobs:
           yarn install --frozen-lockfile --prefer-offline
         
       - name: Lint
-        run: yarn nx run-many --target=lint --parallel=3
+        run: yarn nx run-many --projects=admin,api --target=lint --parallel=true
         
       - name: Type Check
-        run: yarn nx run-many --target=type-check --parallel=3
+        run: yarn nx run-many --projects=admin,api --target=format:check --parallel=true
 
   test:
     name: Test
@@ -81,7 +81,7 @@ jobs:
           yarn install --frozen-lockfile --prefer-offline
       
       - name: Run Tests
-        run: yarn nx run-many --target=test --parallel=3 --coverage
+        run: yarn nx run-many --projects=admin,api,shared --target=test --parallel=true --coverage
       
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
@@ -118,7 +118,7 @@ jobs:
           yarn install --frozen-lockfile --prefer-offline
       
       - name: Build
-        run: yarn nx run-many --target=build --parallel=3
+        run: yarn nx run-many --projects=admin,api --target=build --parallel=true
       
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
