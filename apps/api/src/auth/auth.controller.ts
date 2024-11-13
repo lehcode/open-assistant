@@ -1,5 +1,6 @@
 import type { IAuthCredentials, LoginResponse, User } from '@lib/shared';
 import { Controller, Get, HttpException, HttpStatus, Logger, Post, Request, UseGuards } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import type { Request as RequestType } from 'express';
 import AuthService from './auth.service';
 import { Public } from './decorators/public';
@@ -7,7 +8,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService,
+    private configService: ConfigService) {}
 
   // @UseGuards(LocalAuthGuard)
   @Public()
@@ -32,7 +34,7 @@ export class AuthController {
       Logger.log(`${req.method}: ${req.originalUrl}`);
       Logger.log(JSON.stringify(req.body));
     }
-
+    
     const validUser = await this.authService.validateUser(
       req.body.username,
       req.body.password

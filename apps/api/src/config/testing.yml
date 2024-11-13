@@ -1,0 +1,26 @@
+http:
+  port: 3000
+  host: "0.0.0.0"
+
+auth:
+  jwt:
+    secret: "testingJWT$ecret"
+
+users:
+  valid:
+    id: 999
+    username: "lehcode@gmail.com"
+    plain_password: "$ecret"
+  invalid_id:
+    id: 0
+    username: "invalid.id@gmail.com"
+    plain_password: "$ecret"
+  invalid_username:
+    id: 998
+    username: "invalid.username"
+    plain_password: "$ecret"
+  invalid_password:
+    id: 998
+    username: "invalid.password@gmail.com"
+    plain_password: "$ec ret"
+  

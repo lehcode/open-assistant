@@ -9,4 +9,5 @@ export interface IAuthCredentials {
   userId: number;
   userName: string;
   accessToken: string;
+  refreshToken: string;
 }

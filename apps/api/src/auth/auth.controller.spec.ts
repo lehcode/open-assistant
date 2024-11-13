@@ -1,5 +1,6 @@
 import { IAuthCredentials, User } from '@lib/shared';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Request } from 'express';
@@ -24,6 +25,7 @@ describe('AuthController', () => {
         },
         UserService,
         JwtService,
+        ConfigService
       ],
     }).compile();
 
@@ -42,17 +44,23 @@ describe('AuthController', () => {
       password: 'testPassword',
       salt: 'testSalt'
     };
-    const expectedResponse: IAuthCredentials = {
+    const authCredentials: IAuthCredentials = {
       userId: 999,
       userName: 'testUser',
-      accessToken: 'validToken'
+      accessToken: 'validToken',
+      refreshToken: 'validRefreshToken'
     };
-
+    const expectedResponse = {
+      success: true,
+      statusCode: HttpStatus.OK,
+      data: authCredentials
+    };
+  
     jest.spyOn(authService, 'validateUser').mockResolvedValue(user);
-    jest.spyOn(authService, 'login').mockResolvedValue(expectedResponse);
-
+    jest.spyOn(authService, 'login').mockResolvedValue(authCredentials);
+  
     const result = await controller.login({ body: user } as Request);
-
+  
     expect(result).toEqual(expectedResponse);
     expect(authService.login).toHaveBeenCalledWith(user);
   });

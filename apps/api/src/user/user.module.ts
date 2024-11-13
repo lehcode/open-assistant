@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import UserService from './user.service';
 
 @Module({
-  providers: [UserService],
+  providers: [UserService, ConfigService],
   exports: [UserService],
 })
 

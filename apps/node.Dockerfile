@@ -34,8 +34,7 @@ USER ${user}:docker
 WORKDIR ${app_root}
 
 RUN if [ -n "${debug}" ]; then set -eux; fi && \
-    npm install --no-fund -g npm@latest > /dev/null && \
-    npm install --no-fund -g nx > /dev/null
+    npm install --no-fund -g npm@latest nx > /dev/null
 
 COPY --chown=${user}:docker . .
 
