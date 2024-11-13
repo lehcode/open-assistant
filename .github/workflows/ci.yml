@@ -87,8 +87,11 @@ jobs:
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
       
-      - name: Run Tests
-        run: yarn nx run-many --projects=admin,api --target=test --parallel=true
+      - name: Run API Tests
+        run: yarn nx run api:test --parallel=true --coverage
+
+      - name: Run UI Tests
+        run: yarn nx run admin:test --parallel=true
       
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
