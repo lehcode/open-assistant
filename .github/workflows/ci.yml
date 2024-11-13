@@ -45,7 +45,7 @@ jobs:
           yarn install --frozen-lockfile --prefer-offline
         
       - name: Lint Admin UI
-        run: yarn nx run --projects=admin --target=lint
+        run: yarn nx run --projects=admin --target=lint  --parallel=true
 
       # - name: Lint API
       #   run: yarn nx run api:lint --parallel=true
@@ -84,7 +84,7 @@ jobs:
           yarn install --frozen-lockfile --prefer-offline
       
       - name: Run Tests
-        run: yarn nx run-many --projects=admin,api,shared --target=test --parallel=true --coverage
+        run: yarn nx run-many --projects=admin,api,shared --target=test --parallel=true
       
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
