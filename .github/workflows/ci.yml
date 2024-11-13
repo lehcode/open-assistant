@@ -30,7 +30,7 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.15.1
+          node-version: 20.x
           cache: 'yarn'
           cache-dependency-path: './apps/yarn.lock'
       
@@ -86,24 +86,31 @@ jobs:
         run: |
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
+
+      - name: Reset NX daemon
+        run: yarn nx reset
       
       - name: Run API Tests
         run: yarn nx run api:test --parallel=true --coverage
 
+      - name: Reset NX daemon
+        run: yarn nx reset
+
       - name: Run UI Tests
         run: yarn nx run admin:test --parallel=true 
       
-      - name: Upload Coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: apps/coverage/
-          retention-days: 7
+      # - name: Upload Coverage
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: coverage
+      #     path: apps/coverage/
+      #     retention-days: 7
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [code-quality, test]
+    # needs: [code-quality, test]
+    needs: [test]
     
     steps:
       - uses: actions/checkout@v4
@@ -126,7 +133,10 @@ jobs:
         run: |
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
-      
+
+      - name: Reset NX daemon
+        run: yarn nx reset
+        
       - name: Build
         run: yarn nx run-many --projects=admin,api --target=build --parallel=true
       
