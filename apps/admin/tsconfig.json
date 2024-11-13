@@ -7,11 +7,8 @@
     "types": ["node"]
   },
   "files": [],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "../libs/shared/src/**/*.ts",
-  ],
+  "include": ["src/**/*.ts", "src/**/*.vue", "../libs/shared/src/**/*.ts"],
+  "exclude": ["*.mjs", "*.mts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

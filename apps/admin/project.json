@@ -13,7 +13,7 @@
           "testTarget": "admin:test",
           "watch": true,
           "runtimeArgs": ["--inspect=0.0.0.0:9229"],
-          "testFiles": ["src/**/*.{test,spec}.{ts,tsx}"],
+          "testFiles": ["src/**/*.{test,spec}.{ts}"],
           "globals": true,
           "environment": "jsdom",
           "passWithNoTests": true,
@@ -23,7 +23,7 @@
         },
         "staging": {
           "testTarget": "admin:test:staging",
-          "testFiles": ["src/**/*.{test,spec}.{ts,tsx}"],
+          "testFiles": ["src/**/*.{test,spec}.{ts}"],
           "globals": true,
           "environment": "jsdom",
           "passWithNoTests": true,
@@ -33,7 +33,7 @@
         },
         "production": {
           "testTarget": "admin:test:production",
-          "testFiles": ["src/**/*.{test,spec}.{ts,tsx}"],
+          "testFiles": ["src/**/*.{test,spec}.{ts}"],
           "globals": true,
           "environment": "jsdom",
           "passWithNoTests": true,

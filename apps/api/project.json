@@ -16,7 +16,6 @@
         "outputPath": "dist/api",
         "main": "api/src/main.ts",
         "tsConfig": "api/tsconfig.app.json",
-        "assets": ["api/src/assets"],
         "webpackConfig": "api/webpack.config.js"
       },
       "configurations": {
@@ -70,7 +69,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["api/**/*.ts", "api/**/*.tsx"],
-        "eslintConfig": "eslint.config.mjs",
+        "eslintConfig": "api/eslint.config.js",
         "verbose": true
       },
       "env": {
