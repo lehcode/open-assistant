@@ -9,6 +9,9 @@ on:
 env:
   NODE_OPTIONS: --max_old_space_size=4096
   FORCE_COLOR: true
+  NX_SKIP_NX_CACHE: true # Skip Nx cache during CI
+  NX_BRANCH: ${GITHUB_HEAD_REF:-$GITHUB_REF#refs/heads/}
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 defaults:
   run:
@@ -21,20 +24,31 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed for Nx affected commands
+      
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: 'yarn'
           cache-dependency-path: './apps/yarn.lock'
       
+      # Clear Nx cache before install
+      - name: Clear Nx Cache
+        run: |
+          rm -rf node_modules/.cache/nx
+          rm -rf node_modules/.cache/jest
+      
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --prefer-offline
         
       - name: Lint
-        run: yarn lint
+        run: yarn nx run-many --target=lint --parallel=3
         
       - name: Type Check
-        run: yarn type-check
+        run: yarn nx run-many --target=type-check --parallel=3
 
   test:
     name: Test
@@ -43,10 +57,11 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
-        # 22.x is still in development and not recommended for production
     
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -55,11 +70,18 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: './apps/yarn.lock'
       
+      - name: Clear Nx Cache
+        run: |
+          rm -rf node_modules/.cache/nx
+          rm -rf node_modules/.cache/jest
+      
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --prefer-offline
       
       - name: Run Tests
-        run: yarn test --coverage
+        run: yarn nx run-many --target=test --parallel=3 --coverage
       
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
@@ -75,6 +97,8 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -83,11 +107,18 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: './apps/yarn.lock'
       
+      - name: Clear Nx Cache
+        run: |
+          rm -rf node_modules/.cache/nx
+          rm -rf node_modules/.cache/jest
+      
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --prefer-offline
       
       - name: Build
-        run: yarn build
+        run: yarn nx run-many --target=build --parallel=3
       
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
