@@ -152,7 +152,7 @@ jobs:
         run: yarn nx reset
         
       - name: Build
-        run: yarn nx run-many --projects=admin,api --target=build --parallel=true --varbose
+        run: yarn nx run-many --projects=admin,api --target=build --parallel=true --verbose
       
       - name: Ensure target directory for build exists
         run: mkdir -p apps/dist/
