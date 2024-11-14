@@ -13,6 +13,7 @@ env:
   NX_BRANCH: ${GITHUB_HEAD_REF:-$GITHUB_REF#refs/heads/}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   ESLINT_USE_FLAT_CONFIG: true
+  USE_NODE_VERSION: 20.x
 
 defaults:
   run:
@@ -30,7 +31,7 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.NODE_VERSION }}
+          node-version: $USE_NODE_VERSION
           
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -70,17 +71,17 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [${{ vars.NODE_VERSION }}]
+        node-version: [$USE_NODE_VERSION]
     
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - name: Use Node.js ${{ vars.NODE_VERSION }}
+      - name: Use Node.js $USE_NODE_VERSION
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.NODE_VERSION }}
+          node-version: $USE_NODE_VERSION
       
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -134,7 +135,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.NODE_VERSION }}
+          node-version: $USE_NODE_VERSION
           cache: 'yarn'
           cache-dependency-path: './yarn.lock'
       
