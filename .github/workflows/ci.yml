@@ -16,7 +16,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./apps
+    working-directory: .
 
 jobs:
 #   code-quality:
@@ -28,34 +28,34 @@ jobs:
 #         with:
 #           fetch-depth: 0 # Needed for Nx affected commands
       
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: 'yarn'
-#           cache-dependency-path: './apps/yarn.lock'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+          cache-dependency-path: './yarn.lock'
       
-#       # Clear Nx cache before install
-#       - name: Clear Nx Cache
-#         run: |
-#           rm -rf node_modules/.cache/nx
-#           rm -rf node_modules/.cache/jest
+      # Clear Nx cache before install
+      - name: Clear Nx Cache
+        run: |
+          rm -rf node_modules/.cache/nx
+          rm -rf node_modules/.cache/jest
       
-#       - name: Install Dependencies
-#         run: |
-#           yarn config set network-timeout 300000
-#           yarn install --frozen-lockfile --prefer-offline
+      - name: Install Dependencies
+        run: |
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --prefer-offline
         
-#       - name: Reset NX daemon
-#         run: yarn nx reset
+      - name: Reset NX daemon
+        run: yarn nx reset
 
-#       - name: Lint API
-#         run: yarn nx run api:lint --verbose
+      - name: Lint API
+        run: yarn nx run api:lint --verbose
 
-#       # - name: Lint UI
-#       #   run: yarn nx run admin:lint --verbose
+      - name: Lint UI
+        run: yarn nx run admin:lint --verbose
         
-#       - name: Type Check
-#         run: yarn nx format:check --parallel=true
+      - name: Type Check
+        run: yarn nx format:check --parallel=true
 
   test:
     name: Test
@@ -75,7 +75,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-          cache-dependency-path: './apps/yarn.lock'
+          cache-dependency-path: './yarn.lock'
       
       - name: Clear Nx Cache
         run: |
@@ -99,12 +99,12 @@ jobs:
       - name: Run UI Tests
         run: yarn nx run admin:test --parallel=true 
       
-      # - name: Upload Coverage
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: coverage
-      #     path: apps/coverage/
-      #     retention-days: 7
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: apps/coverage/
+          retention-days: 7
 
   build:
     name: Build
@@ -122,7 +122,7 @@ jobs:
         with:
           node-version: 20.x
           cache: 'yarn'
-          cache-dependency-path: './apps/yarn.lock'
+          cache-dependency-path: './yarn.lock'
       
       - name: Clear Nx Cache
         run: |

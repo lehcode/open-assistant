@@ -24,6 +24,8 @@ router.beforeEach(async (to) => {
       query: { redirect: to.fullPath },
     };
   }
+
+  return;
 });
 
 app.config.errorHandler = (err: any) => {

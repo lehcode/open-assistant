@@ -1,4 +1,4 @@
-import { IApiErrorResponse, IAuthCredentials, LoginRequest, LoginResponse, SafeUser, User } from '@lib/shared';
+import { IApiErrorResponse, IAuthCredentials, LoginRequest, LoginResponse, SafeUser, User } from '@libs/shared';
 import { HttpStatus } from '@nestjs/common';
 import { Ref, ref } from 'vue';
 import { AuthService } from '../services/auth.service';

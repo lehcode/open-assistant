@@ -1,4 +1,4 @@
-import type { AuthCredentials } from '@lib/shared';
+import type { AuthCredentials } from '@libs/shared';
 import { defineStore } from 'pinia';
 
 

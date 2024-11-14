@@ -1,5 +1,5 @@
 
-import { ApiResponse, IApiErrorResponse, IAuthCredentials, LoginRequest } from '@lib/shared';
+import { ApiResponse, IApiErrorResponse, IAuthCredentials, LoginRequest } from '@libs/shared';
 import { ConfigService } from '@nestjs/config';
 import pinia from "../stores/base.store";
 import { useUserStore } from "../stores/user.store";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { LoginRequest } from "@lib/shared";
-import LoginForm from "admin/src/app/components/forms/LoginForm.vue";
+import { LoginRequest } from "@libs/shared";
 import { useRouter } from "vue-router";
+import LoginForm from "../components/forms/LoginForm.vue";
 import { useAuth } from "../composables/useAuth";
 import { LocalStorageService } from "../services/local-storage,service";
 import pinia from "../stores/base.store";
@@ -34,7 +34,7 @@ const handleLogin = async (formData: LoginRequest) => {
       localStorageService.storeUserToken(result.data.accessToken);
       localStorageService.storeUserUsername(result.data.userName);
 
-      router.push({ name: "dashboard" });
+      await router.push({ name: "dashboard" });
     } else {
       throw new Error(result.error);
     }

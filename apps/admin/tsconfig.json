@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "vue",
@@ -8,14 +9,10 @@
   },
   "files": [],
   "include": ["src/**/*.ts", "src/**/*.vue", "../libs/shared/src/**/*.ts"],
-  "exclude": ["*.mjs", "*.mts"],
+  "exclude": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ],
-  "extends": "../tsconfig.base.json"
+    { "path": "../libs/shared" },
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
+  ]
 }
