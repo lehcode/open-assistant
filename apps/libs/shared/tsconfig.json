@@ -10,7 +10,7 @@
     "allowJs": true
   },
   "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/lib/**/*.ts"],
+  "include": ["src/**/*.ts", "src/lib/**/*.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
     {

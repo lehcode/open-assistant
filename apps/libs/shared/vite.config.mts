@@ -11,7 +11,11 @@ export default defineConfig({
   plugins: [
     nxViteTsPaths({ debug: true }),
     nxCopyAssetsPlugin(["*.md"]),
-    dts({ entryRoot: "src", tsconfigPath: path.join(__dirname, "tsconfig.lib.json") })
+    dts({ 
+      entryRoot: "src", 
+      tsconfigPath: path.join(__dirname, "tsconfig.lib.json"),
+      // afterBuild: (files) => (console.log(files.length)), 
+    })
   ],
   // Uncomment this if you are using workers.
   // worker: {
