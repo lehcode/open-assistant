@@ -108,7 +108,7 @@ jobs:
         run: yarn nx reset
       
       - name: Run API Tests
-        run: yarn nx run-many --target=test --projects=admin,api --configuration=testing --coverage --verbose
+        run: node --max-old-space-size=250 `which nx` run-many --target=test --projects=admin,api --configuration=testing --coverage --verbose
       
       - name: Ensure coverage directory exists
         run: mkdir -p apps/coverage/
@@ -135,8 +135,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       
       - name: Clear Nx Cache
         run: |
@@ -152,7 +162,7 @@ jobs:
         run: yarn nx reset
         
       - name: Build
-        run: yarn nx run-many --projects=admin,api --target=build --parallel=true --varbose
+        run: node --max-old-space-size=250 `which nx` run-many --projects=admin,api --target=build --parallel=true --verbose
       
       - name: Ensure target directory for build exists
         run: mkdir -p apps/dist/
