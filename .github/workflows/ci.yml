@@ -15,7 +15,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./apps
+    working-directory: .
 
 jobs:
   code-quality:
@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: 20.x
           cache: 'yarn'
-          cache-dependency-path: './apps/yarn.lock'
+          cache-dependency-path: './yarn.lock'
       
       # Clear Nx cache before install
       - name: Clear Nx Cache
@@ -74,7 +74,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-          cache-dependency-path: './apps/yarn.lock'
+          cache-dependency-path: './yarn.lock'
       
       - name: Clear Nx Cache
         run: |
@@ -111,7 +111,7 @@ jobs:
         with:
           node-version: 20.x
           cache: 'yarn'
-          cache-dependency-path: './apps/yarn.lock'
+          cache-dependency-path: './yarn.lock'
       
       - name: Clear Nx Cache
         run: |
