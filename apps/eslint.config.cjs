@@ -3,31 +3,15 @@ const eslintPlugin = require("@nx/eslint-plugin");
 const tsParser = require("@typescript-eslint/parser");
 const { node, jest, vitest } = require("globals");
 const jsoncParser = require("jsonc-eslint-parser");
-const { fixupConfigRules, fixupPluginRules } = require("@eslint/compat");
-const { FlatCompat } = require("@eslint/eslintrc");
-const eslintJs = require("@eslint/js");
 
-
-// const compat = new FlatCompat({
-//   baseDirectory: __dirname,
-//   recommendedConfig: eslintJs.configs.recommended,
-//   allConfig: eslintJs.configs.all,
-// });
-
-// console.log(fixupConfigRules(
-//   ...compat.extends(jsConfigs),
-// ));
 
 module.exports = [
   jsConfigs.configs.recommended,
   ...eslintPlugin.configs["flat/base"],
   ...eslintPlugin.configs["flat/typescript"],
   ...eslintPlugin.configs["flat/javascript"],
-  // ...nxPlugin.default.configs['flat/react-base'],
-  // ...nxPlugin.default.configs['flat/react-jsx'],
-  // ...nxPlugin.default.configs['flat/react-typescript'],
   {
-    ignores: ["**/dist", "**/node_modules", "**/vite*"],
+    ignores: ["**/dist", "**/node_modules", "**/vite*"]
   },
   {
     languageOptions: {
@@ -35,27 +19,27 @@ module.exports = [
       globals: {
         ...node,
         ...jest,
-        ...vitest,
-      },
+        ...vitest
+      }
     },
     rules: {
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      semi: ["error", "always"], // Require semicolons
+      "semi": ["error", "always"], // Require semicolons
       "no-unused-vars": "warn", // Warn on unused variables
       "no-undef": "warn", // Warn on undefined variables
-      "no-debugger": "warn", // Warn on debugger statements
-    },
+      "no-debugger": "warn" // Warn on debugger statements
+    }
   },
   {
     files: ["*.json"],
     languageOptions: {
-      parser: jsoncParser,
+      parser: jsoncParser
     },
-    rules: {},
+    rules: {}
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
+      "@typescript-eslint/explicit-module-boundary-types": "off",
       "@nx/enforce-module-boundaries": [
         "error",
         {
@@ -64,19 +48,19 @@ module.exports = [
           depConstraints: [
             {
               sourceTag: "*",
-              onlyDependOnLibsWithTags: ["*"],
-            },
-          ],
-        },
-      ],
-    },
+              onlyDependOnLibsWithTags: ["*"]
+            }
+          ]
+        }
+      ]
+    }
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
     // Override or add rules here
     rules: {
-      "@typescript-eslint/no-unused-vars": ["off"],
-      "@typescript-eslint/no-explicit-any": "warn",
-    },
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn"
+    }
   },
 ];

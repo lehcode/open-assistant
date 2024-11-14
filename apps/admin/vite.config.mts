@@ -35,6 +35,7 @@ export default defineConfig({
     globals: true,
     environment: "happy-dom",
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    exclude: ["node_modules", "dist", "coverage", "cypress", "**/*.json"],
     reporters: ["default"],
     coverage: {
       reportsDirectory: "../coverage/admin",

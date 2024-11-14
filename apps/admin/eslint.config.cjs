@@ -3,6 +3,8 @@ const pluginVue = require("eslint-plugin-vue");
 const baseConfig = require("../eslint.config.cjs");
 const { FlatCompat } = require("@eslint/eslintrc");
 const { node, jest, vitest } = require("globals");
+const vueParser = require("vue-eslint-parser");
+const tsEslintParser = require("@typescript-eslint/parser");
 
 const compat = new FlatCompat({
   baseDirectory: __dirname, // optional; default: process.cwd()
@@ -24,39 +26,60 @@ config.env = [
 
 config.extends = compat.extends(...["plugin:vue/vue3-essential", "plugin:vue/vue3-recommended"]);
 
-
 module.exports = [
   ...config,
   ...pluginVue.configs["flat/base"],
   ...pluginVue.configs["flat/essential"],
   ...pluginVue.configs["flat/recommended"],
   ...pluginVue.configs["flat/strongly-recommended"],
-
   {
-    files: ["**/*.vue", "**/*.ts", "**/*.tsx"],
+    files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.vue"],
     languageOptions: {
+      parser: vueParser,
       parserOptions: {
+        parser: tsEslintParser,
         globals: {
-          ...node,
+          ...node
         }
       }
     },
     rules: {
-      "vue/multi-word-component-names": "off",
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["warn"]
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/require-array-sort-compare": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "no-undef": "error",
+      "no-debugger": "error",
     }
   },
   {
-    files: ["**/*.spec.ts",],
+    files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.vue"],
+    rules: {
+      // Turn off the recommended rules that you don't need.
+      "vue/multi-word-component-names": "off",
+      "vue/block-lang": "off",
+      "no-unused-vars": "off",
+    }
+  },
+  {
+    files: ["**/*.vue"],
+    rules: {
+      "@typescript-eslint/no-misused-promises": "off",
+    }
+  },
+  {
+    files: ["**/*.spec.ts"],
     languageOptions: {
       parserOptions: {
         globals: {
           ...node,
           ...jest,
-          ...vitest,
+          ...vitest
         }
       }
+    },
+    rules: {
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/await-thenable": "off",
     }
   },
   {
@@ -64,6 +87,12 @@ module.exports = [
     rules: {
       "vue/html-self-closing": "off",
       "vue/html-closing-bracket-newline": "off"
+    }
+  },
+  {
+    files: ["**/*.cjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off"
     }
   }
 ];

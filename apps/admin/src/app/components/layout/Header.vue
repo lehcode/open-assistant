@@ -24,7 +24,9 @@
 
         <!-- Secondary Nav -->
         <div class="hidden md:flex items-center space-x-4">
-          <router-link to="/login" class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md text-sm font-medium">
+          <router-link
+            to="/login"
+            class="text-gray-900 hover:text-gray-500 px-3 py-2 rounded-md text-sm font-medium">
             Sign in
           </router-link>
           <router-link
@@ -44,8 +46,16 @@
           >
             <span class="sr-only">Open main menu</span>
             <!-- Menu icon -->
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
@@ -53,7 +63,9 @@
     </div>
 
     <!-- Mobile menu, show/hide based on menu state -->
-    <div v-if="mobileMenuOpen" class="md:hidden">
+    <div
+      v-if="mobileMenuOpen"
+      class="md:hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <router-link
           v-for="item in navItems"

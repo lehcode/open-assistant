@@ -1,9 +1,9 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "baseUrl": ".",
   "files": [],
-  "include": ["src/**/*.ts", "../libs/**/src/index.ts", "src/config/*.yml"],
-  "exclude": ["eslint.config.js", "jest.config.ts", "webpack.config.js"],
+  "include": ["src/**/*.ts"],
+  "exclude": [],
   "references": [
     { "path": "../libs/shared/tsconfig.lib.json" },
     { "path": "./tsconfig.app.json" },

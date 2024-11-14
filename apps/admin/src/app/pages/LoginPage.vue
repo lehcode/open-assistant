@@ -34,7 +34,7 @@ const handleLogin = async (formData: LoginRequest) => {
       localStorageService.storeUserToken(result.data.accessToken);
       localStorageService.storeUserUsername(result.data.userName);
 
-      router.push({ name: "dashboard" });
+      await router.push({ name: "dashboard" });
     } else {
       throw new Error(result.error);
     }
