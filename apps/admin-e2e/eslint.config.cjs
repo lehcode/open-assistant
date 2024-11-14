@@ -1,4 +1,4 @@
-const baseConfig = require("../eslint.config.cjs");
+const baseConfig = require("../admin/eslint.config.cjs");
 const { FlatCompat } = require("@eslint/eslintrc");
 const eslintJs = require("@eslint/js");
 const { node, jest, vitest } = require("globals");
