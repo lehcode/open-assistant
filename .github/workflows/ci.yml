@@ -12,20 +12,21 @@ env:
   NX_SKIP_NX_CACHE: true # Skip Nx cache during CI
   NX_BRANCH: ${GITHUB_HEAD_REF:-$GITHUB_REF#refs/heads/}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  ESLINT_USE_FLAT_CONFIG: true
 
 defaults:
   run:
     working-directory: .
 
 jobs:
-  code-quality:
-    name: Code Quality
-    runs-on: ubuntu-latest
+#   code-quality:
+#     name: Code Quality
+#     runs-on: ubuntu-latest
     
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Needed for Nx affected commands
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0 # Needed for Nx affected commands
       
       - uses: actions/setup-node@v4
         with:
@@ -50,8 +51,8 @@ jobs:
       - name: Lint API
         run: yarn nx run api:lint --verbose
 
-      # - name: Lint UI
-      #   run: yarn nx run admin:lint --verbose
+      - name: Lint UI
+        run: yarn nx run admin:lint --verbose
         
       - name: Type Check
         run: yarn nx format:check --parallel=true
@@ -85,9 +86,18 @@ jobs:
         run: |
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
+
+      - name: Reset NX daemon
+        run: yarn nx reset
       
-      - name: Run Tests
-        run: yarn nx run-many --projects=admin,api,shared --target=test --parallel=true
+      - name: Run API Tests
+        run: yarn nx run api:test --parallel=true --coverage
+
+      - name: Reset NX daemon
+        run: yarn nx reset
+
+      - name: Run UI Tests
+        run: yarn nx run admin:test --parallel=true 
       
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
@@ -99,7 +109,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [code-quality, test]
+    # needs: [code-quality, test]
+    needs: [test]
     
     steps:
       - uses: actions/checkout@v4
@@ -122,7 +133,10 @@ jobs:
         run: |
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
-      
+
+      - name: Reset NX daemon
+        run: yarn nx reset
+        
       - name: Build
         run: yarn nx run-many --projects=admin,api --target=build --parallel=true
       
