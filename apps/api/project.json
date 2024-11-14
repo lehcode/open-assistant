@@ -1,7 +1,7 @@
 {
   "name": "api",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "api/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "{workspaceRoot}/apps/api/src",
   "projectType": "application",
   "tags": ["api nestjs openassistant"],
   "// targets": "to see all targets run: nx show project api --web",
@@ -13,10 +13,10 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/api",
-        "main": "api/src/main.ts",
-        "tsConfig": "api/tsconfig.app.json",
-        "webpackConfig": "api/webpack.config.js"
+        "outputPath": "{workspaceRoot}/dist/api",
+        "main": "{projectRoot}/src/main.ts",
+        "tsConfig": "{projectRoot}/tsconfig.app.json",
+        "webpackConfig": "{projectRoot}/webpack.config.js"
       },
       "configurations": {
         "development": {
@@ -66,21 +66,29 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
+      "defaultConfiguration": "production",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["api/**/*.ts", "api/**/*.tsx"],
-        "eslintConfig": "api/eslint.config.js",
+        "lintFilePatterns": ["{projectRoot}/src/**/*.{ts,d.ts}"],
+        "eslintConfig": "{projectRoot}/eslint.config.cjs",
         "verbose": true
       },
-      "env": {
-        "NODE_ENV": "production"
+      "configurations": {
+        "production": {
+          "globals": true,
+          "environment": "happy-node",
+          "passWithNoTests": true,
+          "inputs": {
+            "NODE_ENV": "production"
+          }
+        }
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/api"],
       "options": {
-        "jestConfig": "api/jest.config.ts",
+        "jestConfig": "{projectRoot}/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

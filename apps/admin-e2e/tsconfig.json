@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowJs": true,
     "outDir": "../dist/out-tsc",
@@ -12,8 +12,9 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "src/**/*.d.ts",
-    "eslint.config.js",
+    "eslint.config.cjs",
     "../admin/src/**/*.ts",
     "../admin/src/**/*.vue"
-  ]
+  ],
+  "references": [{ "path": "../libs/shared" }, { "path": "../admin" }]
 }

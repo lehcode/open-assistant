@@ -1,4 +1,4 @@
-import { IAuthCredentials, User } from '@lib/shared';
+import { IAuthCredentials, User } from '@libs/shared';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';

@@ -1,14 +1,14 @@
 /// <reference types='vitest' />
 import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "node:path";
+import path from "path";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { default as tsconfigPaths, default as viteTsPaths } from "vite-tsconfig-paths";
 
 export default defineConfig({
-  root: "./",
-  cacheDir: "../node_modules/.vite/admin",
+  root: __dirname,
+  cacheDir: path.join(__dirname, "../node_modules/.vite/admin"),
   server: {
     port: 4200,
     host: "localhost"
@@ -17,7 +17,7 @@ export default defineConfig({
     port: 4300,
     host: "localhost"
   },
-  plugins: [vue(), nxViteTsPaths(), nxCopyAssetsPlugin(["*.md"]), tsconfigPaths()],
+  plugins: [vue(), viteTsPaths({ root: __dirname }), nxCopyAssetsPlugin(["*.md"]), tsconfigPaths()],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
@@ -43,14 +43,14 @@ export default defineConfig({
     deps: {
       optimizer: {
         web: {
-          include: ['vue', 'vue-router']
+          include: ["vue", "vue-router"]
         }
       }
     }
   },
   resolve: {
     alias: {
-      "@lib/shared": resolve(__dirname, "../libs/shared/src/index.ts")
+      "@libs/shared": resolve(__dirname, "../libs/shared/src/index.ts")
     }
   }
 });

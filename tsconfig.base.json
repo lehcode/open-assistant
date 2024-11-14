@@ -30,10 +30,10 @@
     "strict": true,
     "verbatimModuleSyntax": false,
     "rootDir": ".",
-    "outDir": "dist/out-tsc",
+    "outDir": "apps/dist/out-tsc",
     "paths": {
-      "@lib/shared": ["libs/shared/src/index.ts"]
+      "@libs/shared": ["apps/libs/shared/src/index.ts"]
     }
   },
-  "exclude": ["tmp/**"]
+  "exclude": ["**/tmp", "**/node_modules"]
 }

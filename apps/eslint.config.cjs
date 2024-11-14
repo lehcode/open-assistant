@@ -1,17 +1,15 @@
-const js = require("@eslint/js");
-const nxPlugin = require("@nx/eslint-plugin");
+const jsConfigs = require("@eslint/js");
+const eslintPlugin = require("@nx/eslint-plugin");
 const tsParser = require("@typescript-eslint/parser");
-const globals = require("globals");
+const { node, jest, vitest } = require("globals");
 const jsoncParser = require("jsonc-eslint-parser");
 
+
 module.exports = [
-  js.configs.recommended,
-  ...nxPlugin.configs["flat/base"],
-  ...nxPlugin.configs["flat/typescript"],
-  ...nxPlugin.configs["flat/javascript"],
-  // ...nxPlugin.default.configs['flat/react-base'],
-  // ...nxPlugin.default.configs['flat/react-jsx'],
-  // ...nxPlugin.default.configs['flat/react-typescript'],
+  jsConfigs.configs.recommended,
+  ...eslintPlugin.configs["flat/base"],
+  ...eslintPlugin.configs["flat/typescript"],
+  ...eslintPlugin.configs["flat/javascript"],
   {
     ignores: ["**/dist", "**/node_modules", "**/vite*"]
   },
@@ -19,14 +17,13 @@ module.exports = [
     languageOptions: {
       parser: tsParser,
       globals: {
-        ...globals.node,
-        ...globals.jest,
-        ...globals.vitest
+        ...node,
+        ...jest,
+        ...vitest
       }
     },
     rules: {
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      semi: ["error", "always"], // Require semicolons
+      "semi": ["error", "always"], // Require semicolons
       "no-unused-vars": "warn", // Warn on unused variables
       "no-undef": "warn", // Warn on undefined variables
       "no-debugger": "warn" // Warn on debugger statements
@@ -42,6 +39,7 @@ module.exports = [
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
+      "@typescript-eslint/explicit-module-boundary-types": "off",
       "@nx/enforce-module-boundaries": [
         "error",
         {
@@ -61,8 +59,8 @@ module.exports = [
     files: ["**/*.ts", "**/*.tsx"],
     // Override or add rules here
     rules: {
-      "@typescript-eslint/no-unused-vars": ["off"],
+      "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/no-explicit-any": "warn"
     }
-  }
+  },
 ];
