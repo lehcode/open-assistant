@@ -7,7 +7,7 @@
   "scripts": {
     "affected": "nx affected",
     "prebuild": "nx run shared:build:production",
-    "build": "nx run-many --target=build --projects=admin,api --configuration=production --parallel=true",
+    "build": "nx run-many --target=build --projects=admin,api --configuration=production",
     "delete-project": "npx nx generate @nx/workspace:remove",
     "docs-api": "npx @compodoc/compodoc -p api/tsconfig.json -s",
     "pree2e": "nx reset",
@@ -24,7 +24,7 @@
     "start-admin": "nx run admin:serve:development",
     "start-api": "nx run api:serve:development",
     "pretest": "nx reset",
-    "test": "nx run-many --target=test --projects=admin,api --configuration=testing --parallel=true",
+    "test": "nx run-many --target=test --projects=admin,api --configuration=testing",
     "test-admin": "nx run admin:test:testing",
     "test-api": "nx run api:test:testing"
   },
