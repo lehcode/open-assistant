@@ -30,7 +30,7 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.NODE_VERSION }}
           
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -55,8 +55,8 @@ jobs:
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
         
-      # - name: Reset NX daemon
-      #   run: yarn nx reset
+      - name: Reset NX daemon
+        run: yarn nx reset
 
       - name: Lint API
         run: yarn nx run api:lint --verbose
@@ -70,17 +70,17 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [${{ vars.NODE_VERSION }}]
     
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ vars.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.NODE_VERSION }}
       
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -134,7 +134,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ vars.NODE_VERSION }}
           cache: 'yarn'
           cache-dependency-path: './yarn.lock'
       
