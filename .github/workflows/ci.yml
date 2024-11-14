@@ -108,7 +108,7 @@ jobs:
         run: yarn nx reset
       
       - name: Run API Tests
-        run: node --max-old-space-size=250 `which nx` run-many --target=test --projects=admin,api --configuration=testing --coverage --verbose
+        run: yarn nx run-many --target=test --projects=admin,api --configuration=testing --coverage --verbose
       
       - name: Ensure coverage directory exists
         run: mkdir -p apps/coverage/
@@ -162,7 +162,7 @@ jobs:
         run: yarn nx reset
         
       - name: Build
-        run: node --max-old-space-size=250 `which nx` run-many --projects=admin,api --target=build --parallel=true --verbose
+        run: yarn nx run-many --projects=admin,api --target=build --parallel=true --verbose
       
       - name: Ensure target directory for build exists
         run: mkdir -p apps/dist/
