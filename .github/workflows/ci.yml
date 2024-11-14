@@ -31,8 +31,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
-          cache-dependency-path: './yarn.lock'
+          # cache: 'yarn'
+          # cache-dependency-path: './yarn.lock'
+          
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       
       # Clear Nx cache before install
       - name: Clear Nx Cache
@@ -45,8 +57,8 @@ jobs:
           yarn config set network-timeout 300000
           yarn install --frozen-lockfile --prefer-offline
         
-      - name: Reset NX daemon
-        run: yarn nx reset
+      # - name: Reset NX daemon
+      #   run: yarn nx reset
 
       - name: Lint API
         run: yarn nx run api:lint --verbose
@@ -88,14 +100,11 @@ jobs:
         run: yarn nx reset
       
       - name: Run API Tests
-        run: yarn nx run api:test --parallel=true --coverage
-
-      - name: Reset NX daemon
-        run: yarn nx reset
-
-      - name: Run UI Tests
-        run: yarn nx run admin:test --parallel=true 
+        run: yarn nx run-many --target=test --projects=admin,api --configuration=testing --coverage --verbose
       
+      - name: Ensure coverage directory exists
+        run: mkdir -p apps/coverage/
+
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
@@ -135,8 +144,11 @@ jobs:
         run: yarn nx reset
         
       - name: Build
-        run: yarn nx run-many --projects=admin,api --target=build --parallel=true
+        run: yarn nx run-many --projects=admin,api --target=build --parallel=true --varbose
       
+      - name: Ensure target directory for build exists
+        run: mkdir -p apps/dist/
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
