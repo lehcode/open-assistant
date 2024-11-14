@@ -1,14 +1,28 @@
-const js = require("@eslint/js");
-const nxPlugin = require("@nx/eslint-plugin");
+const jsConfigs = require("@eslint/js");
+const eslintPlugin = require("@nx/eslint-plugin");
 const tsParser = require("@typescript-eslint/parser");
-const globals = require("globals");
+const { node, jest, vitest } = require("globals");
 const jsoncParser = require("jsonc-eslint-parser");
+const { fixupConfigRules, fixupPluginRules } = require("@eslint/compat");
+const { FlatCompat } = require("@eslint/eslintrc");
+const eslintJs = require("@eslint/js");
+
+
+// const compat = new FlatCompat({
+//   baseDirectory: __dirname,
+//   recommendedConfig: eslintJs.configs.recommended,
+//   allConfig: eslintJs.configs.all,
+// });
+
+// console.log(fixupConfigRules(
+//   ...compat.extends(jsConfigs),
+// ));
 
 module.exports = [
-  js.configs.recommended,
-  ...nxPlugin.configs["flat/base"],
-  ...nxPlugin.configs["flat/typescript"],
-  ...nxPlugin.configs["flat/javascript"],
+  jsConfigs.configs.recommended,
+  ...eslintPlugin.configs["flat/base"],
+  ...eslintPlugin.configs["flat/typescript"],
+  ...eslintPlugin.configs["flat/javascript"],
   // ...nxPlugin.default.configs['flat/react-base'],
   // ...nxPlugin.default.configs['flat/react-jsx'],
   // ...nxPlugin.default.configs['flat/react-typescript'],
@@ -19,9 +33,9 @@ module.exports = [
     languageOptions: {
       parser: tsParser,
       globals: {
-        ...globals.node,
-        ...globals.jest,
-        ...globals.vitest,
+        ...node,
+        ...jest,
+        ...vitest,
       },
     },
     rules: {
