@@ -96,6 +96,9 @@ jobs:
       - name: Run UI Tests
         run: yarn nx run admin:test --parallel=true 
       
+      - name: Ensure coverage directory exists
+        run: mkdir -p apps/coverage/
+
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
@@ -137,6 +140,9 @@ jobs:
       - name: Build
         run: yarn nx run-many --projects=admin,api --target=build --parallel=true
       
+      - name: Ensure target directory for build exists
+        run: mkdir -p apps/dist/
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
