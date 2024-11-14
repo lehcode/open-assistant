@@ -1,20 +1,19 @@
 /// <reference types='vitest' />
 import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
-import * as path from "path";
+import path, { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import viteTsPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: path.join(__dirname,  "..", "..", "node_modules", ".vite", "libs", "shared"),
+  cacheDir: "../../node_modules/.vite/libs/shared",
   plugins: [
-    nxViteTsPaths({ debug: true }),
+    viteTsPaths({ root: __dirname }),
     nxCopyAssetsPlugin(["*.md"]),
-    dts({ 
-      entryRoot: "src", 
-      tsconfigPath: path.join(__dirname, "tsconfig.lib.json"),
-      // afterBuild: (files) => (console.log(files.length)), 
+    dts({
+      entryRoot: "src",
+      tsconfigPath: path.join(__dirname, "tsconfig.lib.json")
     })
   ],
   // Uncomment this if you are using workers.
@@ -24,7 +23,7 @@ export default defineConfig({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: path.join(__dirname, "..", "..", "dist", "libs", "shared"),
+    outDir: "../../dist/libs/shared",
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -32,7 +31,7 @@ export default defineConfig({
     },
     lib: {
       // Could also be a dictionary or array of multiple entry points.
-      entry: path.join(__dirname, "src", "index.ts"),
+      entry: path.join(__dirname, "src/index.ts"),
       name: "shared",
       fileName: "index",
       // Change this to the formats you want to support.
@@ -53,6 +52,11 @@ export default defineConfig({
     coverage: {
       reportsDirectory: "../../coverage/libs/shared",
       provider: "v8"
+    }
+  },
+  resolve: {
+    alias: {
+      "@libs/shared": resolve(__dirname, "./src/index.ts")
     }
   }
 });

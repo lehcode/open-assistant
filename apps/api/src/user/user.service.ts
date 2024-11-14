@@ -1,4 +1,4 @@
-import { User } from '@lib/shared';
+import { User } from '@libs/shared';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';

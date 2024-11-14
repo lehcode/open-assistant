@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LoginRequest } from "@lib/shared";
+import { LoginRequest } from "@libs/shared";
 import { Lock, Mail } from "lucide-vue-next";
 import { reactive, ref } from "vue";
 

@@ -13,12 +13,12 @@
       "!{workspaceRoot}/**/.eslintrc.json",
       "!{workspaceRoot}/**/eslint.config.cjs",
       "!{workspaceRoot}/**/jest.config.[jt]s",
-      "!{workspaceRoot}/**/src/test-setup.[jt]s",
+      "!{workspaceRoot}/**/test-setup.[jt]s",
       "!{workspaceRoot}/**/test-setup.[jt]s"
     ],
     "development": [
       "default",
-      "{workspaceRoot}/apps/src/**/*"
+      "{workspaceRoot}/apps/**/src/**/*"
     ],
     "sharedGlobals": [
       "{workspaceRoot}/.gitlab-ci.yml"
@@ -37,7 +37,7 @@
         }
       },
       "exclude": [
-        "{workspaceRoot}apps/libs/**/*"
+        "{workspaceRoot}/apps/libs/**/*"
       ]
     },
     {
@@ -71,8 +71,8 @@
         "targetName": "e2e"
       },
       "exclude": [
-        "{workspaceRoot}/apps/**/*.spec.ts",
-        "{workspaceRoot}/apps/**/*.spec.tsx"
+        "{projectRoot}/**/*.spec.ts",
+        "{projectRoot}/**/*.spec.tsx"
       ]
     },
     {
@@ -81,14 +81,11 @@
         "targetName": "test"
       },
       "exclude": [
-        "{workspaceRoot}/apps/**/*-e2e/**/*"
+        "{projectRoot}/**/*-e2e/**/*"
       ]
     },
     {
       "plugin": "@nx/js/typescript",
-      "include": [
-        "{workspaceRoot}/apps/libs/shared/*"
-      ],
       "options": {
         "typecheck": {
           "targetName": "typecheck"

@@ -1,4 +1,4 @@
-import type { IAuthCredentials, LoginResponse, User } from '@lib/shared';
+import type { IAuthCredentials, LoginResponse, User } from '@libs/shared';
 import { Controller, Get, HttpException, HttpStatus, Logger, Post, Request, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Request as RequestType } from 'express';

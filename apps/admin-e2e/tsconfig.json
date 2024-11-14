@@ -15,5 +15,6 @@
     "eslint.config.cjs",
     "../admin/src/**/*.ts",
     "../admin/src/**/*.vue"
-  ]
+  ],
+  "references": [{ "path": "../libs/shared" }, { "path": "../admin" }]
 }

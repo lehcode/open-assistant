@@ -1,4 +1,4 @@
-import { User } from '@lib/shared';
+import { User } from '@libs/shared';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import UserService from './user.service';
