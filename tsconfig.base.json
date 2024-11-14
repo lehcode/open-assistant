@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./apps",
+    "baseUrl": ".",
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "declarationMap": false,
@@ -32,7 +32,7 @@
     "rootDir": ".",
     "outDir": "apps/dist/out-tsc",
     "paths": {
-      "@lib/shared": ["apps/libs/shared/src/index.ts"]
+      "@libs/shared": ["apps/libs/shared/src/index.ts"]
     }
   },
   "exclude": ["**/tmp", "**/node_modules"]

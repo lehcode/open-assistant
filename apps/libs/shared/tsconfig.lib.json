@@ -4,10 +4,9 @@
     "outDir": "../../dist",
     "types": ["node", "vite/client"],
   },
-  "include": ["src/**/*.ts"],
+  "include": [],
   "exclude": [
-    "vite.config.mts",
-    "vitest.config.mts",
+    "vite.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
   ]

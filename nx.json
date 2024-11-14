@@ -3,22 +3,22 @@
   "defaultBase": "master",
   "namedInputs": {
     "default": [
-      "{projectRoot}/apps/**/*",
+      "{workspaceRoot}/apps/**/*",
       "sharedGlobals"
     ],
     "production": [
       "default",
-      "!{projectRoot}/apps/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/apps/tsconfig.spec.json",
-      "!{projectRoot}/apps/.eslintrc.json",
-      "!{projectRoot}/apps/eslint.config.cjs",
-      "!{projectRoot}/apps/jest.config.[jt]s",
-      "!{projectRoot}/apps/src/test-setup.[jt]s",
-      "!{projectRoot}/apps/test-setup.[jt]s"
+      "!{workspaceRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{workspaceRoot}/**/tsconfig.spec.json",
+      "!{workspaceRoot}/**/.eslintrc.json",
+      "!{workspaceRoot}/**/eslint.config.cjs",
+      "!{workspaceRoot}/**/jest.config.[jt]s",
+      "!{workspaceRoot}/**/src/test-setup.[jt]s",
+      "!{workspaceRoot}/**/test-setup.[jt]s"
     ],
     "development": [
       "default",
-      "{projectRoot}/apps/src/**/*"
+      "{workspaceRoot}/apps/src/**/*"
     ],
     "sharedGlobals": [
       "{workspaceRoot}/.gitlab-ci.yml"
@@ -37,7 +37,7 @@
         }
       },
       "exclude": [
-        "apps/libs/**/*"
+        "{workspaceRoot}apps/libs/**/*"
       ]
     },
     {
@@ -71,8 +71,8 @@
         "targetName": "e2e"
       },
       "exclude": [
-        "apps/**/*.spec.ts",
-        "apps/**/*.spec.tsx"
+        "{workspaceRoot}/apps/**/*.spec.ts",
+        "{workspaceRoot}/apps/**/*.spec.tsx"
       ]
     },
     {
@@ -81,13 +81,13 @@
         "targetName": "test"
       },
       "exclude": [
-        "apps/**/*-e2e/**/*"
+        "{workspaceRoot}/apps/**/*-e2e/**/*"
       ]
     },
     {
       "plugin": "@nx/js/typescript",
       "include": [
-        "apps/libs/shared/*"
+        "{workspaceRoot}/apps/libs/shared/*"
       ],
       "options": {
         "typecheck": {

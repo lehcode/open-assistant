@@ -35,7 +35,6 @@ export default defineConfig({
     globals: true,
     environment: "happy-dom",
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
-    exclude: ["node_modules", "dist", "coverage", "cypress", "**/*.json"],
     reporters: ["default"],
     coverage: {
       reportsDirectory: "../coverage/admin",
@@ -51,7 +50,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@lib/shared": resolve(__dirname, "../libs/shared/src/index.ts")
+      "@libs/shared": resolve(__dirname, "../libs/shared/src/index.ts")
     }
   }
 });
