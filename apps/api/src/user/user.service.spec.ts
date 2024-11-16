@@ -65,4 +65,64 @@ describe('UsersService', () => {
       expect(result).toEqual(user);
     });
   });
+
+  it('should initialize users with correct default values', async () => {
+    const mockHashPassword = jest.fn().mockResolvedValue({
+      hashedPassword: 'hashedSecret',
+      salt: 'generatedSalt'
+    });
+    service['hashPassword'] = mockHashPassword;
+  
+    await service['initializeUsers']();
+  
+    expect(mockHashPassword).toHaveBeenCalledWith('$ecret');
+    expect(service['users']).toEqual([
+      {
+        id: 999,
+        username: 'lehcode@gmail.com',
+        password: 'hashedSecret',
+        salt: 'generatedSalt'
+      }
+    ]);
+  });
+
+  it('should correctly hash the password during user initialization', async () => {
+    const mockHashPassword = jest.fn().mockResolvedValue({
+      hashedPassword: 'hashedSecret',
+      salt: 'generatedSalt'
+    });
+    service['hashPassword'] = mockHashPassword;
+  
+    await service['initializeUsers']();
+  
+    expect(mockHashPassword).toHaveBeenCalledWith('$ecret');
+    expect(service['users']).toEqual([
+      {
+        id: 999,
+        username: 'lehcode@gmail.com',
+        password: 'hashedSecret',
+        salt: 'generatedSalt'
+      }
+    ]);
+  });
+
+  it('should handle empty string password during user initialization', async () => {
+    const mockHashPassword = jest.fn().mockResolvedValue({
+      hashedPassword: 'hashedEmptyString',
+      salt: 'saltForEmptyString'
+    });
+    service['hashPassword'] = mockHashPassword;
+  
+    await service['initializeUsers']();
+  
+    expect(mockHashPassword).toHaveBeenCalledWith('$ecret');
+    expect(service['users']).toEqual([
+      {
+        id: 999,
+        username: 'lehcode@gmail.com',
+        password: 'hashedEmptyString',
+        salt: 'saltForEmptyString'
+      }
+    ]);
+  });
 });

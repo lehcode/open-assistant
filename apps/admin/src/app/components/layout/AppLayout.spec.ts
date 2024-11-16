@@ -16,7 +16,7 @@ describe('AppLayout', () => {
     const router = createRouter({
       history: createWebHistory(),
       routes: [
-        { path: '/', component: { template: '<div>Home</div>' } },
+        { path: '/', component: { template: '<div>Welcome to AppLayout</div>' } },
       ],
     });
 
@@ -39,6 +39,6 @@ describe('AppLayout', () => {
     expect(wrapper.exists()).toBe(true);
 
     // Adjust this expectation based on the actual content of AppLayout
-    // expect(wrapper.text()).toContain('Welcome to AppLayout');
+    expect(wrapper.text()).toContain('Welcome to AppLayout');
   });
 });
