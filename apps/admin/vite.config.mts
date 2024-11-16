@@ -52,5 +52,5 @@ export default defineConfig({
     alias: {
       "@libs/shared": resolve(__dirname, "../libs/shared/src/index.ts")
     }
-  }
+  },
 });
