@@ -27,7 +27,7 @@ services:
   # Frontend
   react:
     build:
-      dockerfile: node.Dockerfile
+      dockerfile: node.dev.Dockerfile
       context: ./apps
       args:
         - node_version=${NODE_VERSION:-lts}
@@ -45,7 +45,7 @@ services:
   # API Layer
   api:
     build:
-      dockerfile: node.Dockerfile
+      dockerfile: node.dev.Dockerfile
       context: ./apps
     deploy:
       replicas: 3

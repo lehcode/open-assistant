@@ -9,7 +9,7 @@ services:
   # api
   api:
     build:
-      dockerfile: node.Dockerfile
+      dockerfile: node.dev.Dockerfile
       context: ./apps
       args:
         - app_root=/home/${HOST_USER}/open-assistant/apps
