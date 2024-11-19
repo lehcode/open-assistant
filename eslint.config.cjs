@@ -11,7 +11,7 @@ module.exports = [
   ...eslintPlugin.configs["flat/typescript"],
   ...eslintPlugin.configs["flat/javascript"],
   {
-    ignores: ["**/dist", "**/node_modules", "**/vite*"]
+    ignores: ["apps/dist", "apps/node_modules", "**/vite*"]
   },
   {
     languageOptions: {
