@@ -1,15 +1,27 @@
 import type { IAuthCredentials, LoginResponse, User } from '@libs/shared';
 import { Controller, Get, HttpException, HttpStatus, Logger, Post, Request, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { Request as RequestType } from 'express';
 import AuthService from './auth.service';
 import { Public } from './decorators/public';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { SharedService } from './shared.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService,
-    private configService: ConfigService) {}
+  private supabase: SupabaseClient;
+
+  constructor(
+    private readonly authService: AuthService,
+    private configService: ConfigService,
+    private readonly sharedService: SharedService
+  ) {
+    this.supabase = createClient(
+      this.configService.get('supabase.url') as string,
+      this.configService.get('supabase.key') as string
+    );
+  }
 
   // @UseGuards(LocalAuthGuard)
   @Public()
@@ -29,28 +41,29 @@ export class AuthController {
    * @param req - The Express request object.
    * @returns An `AuthCredentials` object or a 403 Forbidden HTTP exception.
    */
-  async login(@Request() req: RequestType): Promise<LoginResponse<IAuthCredentials>> {
+  async login(@Request() req: RequestType & IAuthCredentials): Promise<LoginResponse<IAuthCredentials>> {
     if (process.env.NODE_ENV !== 'production') {
       Logger.log(`${req.method}: ${req.originalUrl}`);
       Logger.log(JSON.stringify(req.body));
     }
-    
-    const validUser = await this.authService.validateUser(
-      req.body.username,
-      req.body.password
-    );
 
-    if (!validUser) {
-      throw new HttpException('Invalid username or password', HttpStatus.FORBIDDEN);
+    if (req.method !== 'POST') {
+      throw new HttpException('Method not allowed', HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    const loginCredentials = await this.authService.login({ ...validUser});
-    
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      data: loginCredentials
-    } as LoginResponse<IAuthCredentials>;
+    let validResponse: LoginResponse<IAuthCredentials> = {
+      success: false,
+      statusCode: HttpStatus.FORBIDDEN,
+    };
+
+    try {
+      validResponse = await this.sharedService.login(req, this.supabase);
+    } catch (error) {
+      Logger.error(error);
+      throw new Error("Login failed");
+    }
+
+    return validResponse;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -67,6 +80,8 @@ export class AuthController {
           message: 'Not authorized',
         };
       }
+
+      this.supabase.auth.signOut();
 
       return {
         success: true,

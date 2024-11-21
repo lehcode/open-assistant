@@ -2,10 +2,14 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { AuthResolver } from '../auth/graphql/auth.resolver';
+import { SupabaseStrategy } from '../auth/strategies/supabase.strategy';
+import { SupabaseService } from '../supabase/supabase.service';
 import { UserModule } from '../user/user.module';
-import AuthService from './auth.service';
+import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { SharedService } from './shared.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
@@ -19,7 +23,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '300s' },
     }),
-    PassportModule
+    PassportModule,
   ],
   providers: [
     {
@@ -28,9 +32,13 @@ import { LocalStrategy } from './strategies/local.strategy';
     },
     AuthService,
     LocalStrategy,
-    JwtStrategy
+    JwtStrategy,
+    SupabaseService,
+    AuthResolver,
+    SupabaseStrategy,
+    SharedService
   ],
-  exports: [AuthService],
+  exports: [AuthService, SupabaseService],
 })
 
 export class AuthModule {}

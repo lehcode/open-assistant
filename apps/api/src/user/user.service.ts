@@ -56,10 +56,30 @@ class UserService {
     return newUser;
   }
 
-  async validatePassword(user: User, password: string) {
+/**
+ * Validates the provided password against the stored password for a user.
+ *
+ * This function compares the given password with the user's stored hashed password
+ * using bcrypt. It returns a promise that resolves to a boolean indicating whether
+ * the password matches.
+ *
+ * @param {User} user - The user object containing the stored hashed password.
+ * @param {string} password - The password to validate.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the password matches, false otherwise.
+ */
+  async validatePassword(user: User, password: string): Promise<boolean> {
     return bcrypt.compare(password, user.password);
   }
 
+  /**
+   * Hashes the given password using the configured saltRounds.
+   *
+   * The function will return a Promise that resolves to an object containing
+   * the hashed password and the salt used.
+   *
+   * @param {string} password - The password to hash.
+   * @returns {Promise<{ hashedPassword: string; salt: string }>} - A Promise that resolves to an object containing the hashed password and the salt used.
+   */
   private async hashPassword(password: string): Promise<{ hashedPassword: string; salt: string }> {
     const salt = await bcrypt.genSalt(this.bcryptConfig.saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);

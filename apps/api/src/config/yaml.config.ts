@@ -23,8 +23,7 @@ export default async(): Promise<Record<string, any>> => {
   await ConfigModule.envVariablesLoaded;
   
   const config = yaml.load(
-    // @ts-expect-error ts(2304)
-    readFileSync(resolve("./api/src/app/config", process.env.DEFAULT_YAML_CONFIG), 'utf8'),
+    readFileSync(resolve("./src/config", String(process.env.DEFAULT_YAML_CONFIG)), 'utf8'),
   ) as Record<string, any>;
 
   if (config.http.port < 1024 || config.http.port > 49151) {

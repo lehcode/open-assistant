@@ -59,7 +59,7 @@ describe('AuthController', () => {
     jest.spyOn(authService, 'validateUser').mockResolvedValue(user);
     jest.spyOn(authService, 'login').mockResolvedValue(authCredentials);
   
-    const result = await controller.login({ body: user } as Request);
+    const result = await controller.login({ body: user } as Request & IAuthCredentials);
   
     expect(result).toEqual(expectedResponse);
     expect(authService.login).toHaveBeenCalledWith(user);
@@ -75,7 +75,7 @@ describe('AuthController', () => {
     
     jest.spyOn(authService, 'validateUser').mockResolvedValue(null);
 
-    await expect(controller.login({ body: user } as Request)).rejects.toThrow(
+    await expect(controller.login({ body: user } as Request & IAuthCredentials )).rejects.toThrow(
       new HttpException('Invalid username or password', HttpStatus.FORBIDDEN)
     );
   });
@@ -87,7 +87,7 @@ describe('AuthController', () => {
     
     jest.spyOn(authService, 'validateUser').mockResolvedValue(null);
 
-    await expect(controller.login({ body: invalidUser } as unknown as Request)).rejects.toThrow(
+    await expect(controller.login({ body: invalidUser } as unknown as Request & IAuthCredentials )).rejects.toThrow(
       new HttpException('Invalid username or password', HttpStatus.FORBIDDEN)
     );
   });
@@ -104,7 +104,7 @@ describe('AuthController', () => {
     jest.spyOn(authService, 'validateUser').mockResolvedValue(user);
     jest.spyOn(authService, 'login').mockRejectedValue(expectedError);
   
-    await expect(controller.login({ body: user } as Request)).rejects.toThrow(expectedError);
+    await expect(controller.login({ body: user } as Request & IAuthCredentials )).rejects.toThrow(expectedError);
   
     expect(authService.login).toHaveBeenCalledWith(user);
   });

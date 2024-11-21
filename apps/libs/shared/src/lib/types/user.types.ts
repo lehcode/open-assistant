@@ -1,18 +1,10 @@
+import { IUser } from "apps/libs/shared/src/lib/interfaces/user.interfaces";
 import { ApiResponse } from "./base.types";
 
-export type User = {
-  id: number;
-  username: string;
-  password: string;
-  // The salt used to generate the password hash
-  salt?: string;
-  access_token?: string;
-};
+export type User = IUser
 
 export type SafeUser = Omit<User, 'password' | 'salt'>
 
-
 type AuthCredentials = Pick<User, 'id' | 'username' | 'access_token'>
-
 
 export type UserLoginResponse = ApiResponse<AuthCredentials>

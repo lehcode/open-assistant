@@ -7,7 +7,7 @@ export type LoginRequest = Required<ILoginRequest>;
 
 export type LoginResponse<T> = T extends { success: true }
 ? IApiSuccessResponse & { data: T }
-: IApiErrorResponse;
+: Partial<IApiErrorResponse>;
 
 
 export type AuthCredentials = IAuthCredentials;

@@ -1,16 +1,17 @@
 import { AuthCredentials, SafeUser, User } from '@libs/shared';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User as SupabaseUser } from '@supabase/auth-js';
+import { Session } from '@supabase/supabase-js';
 import UserService from '../user/user.service';
 
 @Injectable()
-class AuthService {
+export class AuthService {
   constructor(
     private readonly userService: UserService,
     private jwtService: JwtService
   ) {}
 
-  
   /**
    * Validate a user with the given username and password.
    *
@@ -21,11 +22,11 @@ class AuthService {
    *
    * @param {string} username - The username to validate.
    * @param {string} pass - The password to validate.
-   * @returns {Promise<{ id: number; username: string } | null>} - The validated user or null.
+   * @returns {Promise<SafeUser | null>} - The validated user or null.
    */
-  async validateUser(username: string, pass: string): Promise<{ id: number; username: string } | null> {
+  async validateUser(username: string, pass: string): Promise<SafeUser | null> {
     const user = (await this.userService.findOne(username)) as User;
-    if (user && await this.userService.validatePassword(user, pass)) {
+    if (user && (await this.userService.validatePassword(user, pass))) {
       const { id, username } = user;
       return { id, username };
     }
@@ -48,13 +49,29 @@ class AuthService {
       sub: user.id,
     });
 
+    // Persist login data
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Storing application auth token to database');
+    }
+    const refresh_token = 'refresh_token';
+    // const { access_token, refresh_token } = await this.databaseService.persistAppLogin({ user, session });
+    
+    debugger;
+
     return {
       userId: user.id,
       userName: user.username,
       accessToken: access_token,
-      // @ts-expect-error ts(2349)
-      refreshToken: refresh_token, // eslint-disable-line no-undef
+      refreshToken: refresh_token,
     };
+  }
+
+  supabaseLogin({ user, session }: { user: SupabaseUser; session: Session }) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Storing Supabase auth token to database');
+    }
+
+    debugger;
   }
 }
 

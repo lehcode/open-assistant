@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import session from 'express-session';
-import { AppModule } from './app/app.module';
+import { AppModule } from './app.module';
 
 const appModuleConfig = {
   cors: {
@@ -25,7 +25,7 @@ const swaggerConfig = new DocumentBuilder()
   .setTitle('Open Assistant API')
   .setDescription('Description')
   .setVersion('1.0')
-  .addTag('api')
+  .addTag('assistant-api')
   .build();
 
 /**
@@ -60,7 +60,7 @@ async function bootstrap(): Promise<void> {
     const port = configService.get('http.port') || 4443;
     const host = configService.get('http.host') || 'localhost';
     const jwtSecret = configService.get('auth.jwt.secret') || 'my-secret';
-    const jwtLifetime = configService.get('auth.jwt.lifetime') || '5m';
+    // const jwtLifetime = configService.get('auth.jwt.lifetime') || '5m';
 
     app.use(
       session({

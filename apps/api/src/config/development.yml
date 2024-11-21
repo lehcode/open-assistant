@@ -2,7 +2,19 @@ http:
   port: 2998
   host: "0.0.0.0"
   ssl: false
+  corsOrigins: []
 
 auth:
-  jwt:
-    secret: "secretJWT$ecret"
+  app:
+    jwt:
+      secret: "superSecretJWTTokenWithAtLeast32CharactersLong"
+      expiresIn: ""
+  supabase:
+    jwt:
+      secret: "superSecretJWTTokenWithAtLeast32CharactersLong"
+      expiresIn: ""
+    s3:
+      url: "http://127.0.0.1:54321/storage/v1/s3"
+      region: "eu-central-1"
+      accessKey: ""
+      secretKey: ""
