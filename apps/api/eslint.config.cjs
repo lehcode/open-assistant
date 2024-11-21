@@ -1,5 +1,5 @@
 const nestjsPlugin = require("eslint-plugin-nestjs");
-const baseConfig = require("../eslint.config.cjs");
+const baseConfig = require("../../eslint.config.cjs");
 
 const config = [...baseConfig];
 
