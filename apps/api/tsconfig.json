@@ -9,7 +9,7 @@
     { "path": "./tsconfig.spec.json" }
   ],
   "compilerOptions": {
-    "esModuleInterop": true
+    "esModuleInterop": true,
   },
   "webpackConfig": "./webpack.config.js"
 }

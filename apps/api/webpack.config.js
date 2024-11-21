@@ -19,6 +19,7 @@ module.exports = composePlugins(withNx(), (config) => {
     ...config,
     context: __dirname,
     entry: "./src/main.ts",
+    devtool: 'inline-source-map',
     plugins: [
       new NxAppWebpackPlugin({
         target: "node",

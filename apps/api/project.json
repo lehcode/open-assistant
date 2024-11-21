@@ -13,7 +13,7 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "{workspaceRoot}/dist/api",
+        "outputPath": "{workspaceRoot}/apps/dist/api",
         "main": "{projectRoot}/src/main.ts",
         "tsConfig": "{projectRoot}/tsconfig.app.json",
         "webpackConfig": "{projectRoot}/webpack.config.js"
@@ -50,17 +50,7 @@
           "buildTarget": "api:build:development",
           "inspect": true,
           "watch": true,
-          "runtimeArgs": ["--inspect=0.0.0.0:9229"],
-          "env": {
-            "NODE_ENV": "development"
-          }
-        },
-        "production": {
-          "buildTarget": "api:build:production",
-          "inspect": false,
-          "env": {
-            "NODE_ENV": "production"
-          }
+          "runtimeArgs": ["--inspect=0.0.0.0:9229"]
         }
       }
     },
