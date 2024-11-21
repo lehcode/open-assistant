@@ -1,0 +1,39 @@
+{
+  "name": "api-worker",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/cf/api-worker/src",
+  "projectType": "application",
+  "tags": ["scope:cloudflare"],
+  "targets": {
+    "serve": {
+      "executor": "@naxodev/nx-cloudflare:serve",
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 8787,
+        "watch": true,
+        "env": "development"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "api-:build:development",
+          "inspect": true,
+          "watch": true,
+          "runtimeArgs": ["--inspect=0.0.0.0:9229"],
+          "env": {
+            "NODE_ENV": "development"
+          }
+        }
+      }
+    },
+    "deploy": {
+      "executor": "@naxodev/nx-cloudflare:deploy",
+      "configurations": {
+        "staging": {
+          "env": {
+            "NODE_ENV": "development"
+          }
+        }
+      }
+    }
+  }
+}
