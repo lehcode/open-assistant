@@ -1,0 +1,14 @@
+name = "api-worker"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+main = "src/index.ts"
+account_id = "905491a062e8a0fb2ca54d7af4c6a58b"
+
+[env.development]
+ENVIRONMENT = "development"
+API_URL = "http://localhost:3000"
+
+[env.staging]
+compatibility_date = "2024-11-17"
+ENVIRONMENT = "staging"
+API_URL = "http://api.intendent.online"
