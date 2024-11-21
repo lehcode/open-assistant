@@ -1,0 +1,8 @@
+# Add files here to ignore them from prettier formatting
+/apps/dist
+/apps/coverage
+/.nx/cache
+/.nx/workspace-data
+/.verdaccio
+/.idea
+/.husky
