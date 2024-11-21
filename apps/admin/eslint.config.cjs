@@ -1,6 +1,6 @@
 const eslintJs = require("@eslint/js");
 const pluginVue = require("eslint-plugin-vue");
-const baseConfig = require("../eslint.config.cjs");
+const baseConfig = require("../../eslint.config.cjs");
 const { FlatCompat } = require("@eslint/eslintrc");
 const { node, jest, vitest } = require("globals");
 const vueParser = require("vue-eslint-parser");
