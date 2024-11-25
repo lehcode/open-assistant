@@ -80,7 +80,7 @@
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/swagger": "^8.0.7",
     "@nestjs/testing": "^10.0.2",
-    "@nx/angular": "20.0.2",
+    "@nx/angular": "20.1.3",
     "@nx/devkit": "20.0.2",
     "@nx/esbuild": "19.8.11",
     "@nx/eslint": "20.0.2",
